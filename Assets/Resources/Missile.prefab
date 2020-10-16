@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2480116700972449792}
   - component: {fileID: 5067109378389625557}
   - component: {fileID: 7548818901720974363}
-  - component: {fileID: 3773520097322121060}
   m_Layer: 0
   m_Name: Missile
   m_TagString: Missile
@@ -53,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -73,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 9
+  m_SortingOrder: 8
   m_Sprite: {fileID: 21300000, guid: 2b0de3bd09b17c24da7d2652c189edd9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -119,18 +118,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.18339969, y: -0.011705779}
+  m_Offset: {x: -0.030686058, y: -0.011705779}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.96, y: 0.96}
+    oldSize: {x: 0.32, y: 0.32}
     newSize: {x: 0.16, y: 0.16}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.39957872, y: 0.10790931}
+  m_Size: {x: 0.39733702, y: 0.10790931}
   m_EdgeRadius: 0
 --- !u!114 &7548818901720974363
 MonoBehaviour:
@@ -157,7 +156,6 @@ MonoBehaviour:
   KeyNum: 6
   pressed: 0
   alpha: 1
-  life: 100
   born: 0
   owner: 
   combo: 1
@@ -167,6 +165,7 @@ MonoBehaviour:
   l: {fileID: 0}
   lp: []
   force: 100
+  life: 100
   maxLife: 100
   dead: 0
   lastKill: 0
@@ -181,22 +180,7 @@ MonoBehaviour:
   target: {fileID: 0}
   evades: []
   targeted: 0
---- !u!95 &3773520097322121060
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7402023563757695550}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 00e9fdad2dec2544fb15825601cdf64d, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  targetTag: 
+  keyDownInit: 3
+  missileCount: 10
+  origScaleX: 0

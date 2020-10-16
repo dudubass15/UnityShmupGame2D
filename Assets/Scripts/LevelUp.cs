@@ -13,7 +13,7 @@ public class LevelUp : Base
     public override void Update()
     {
         base.Update();
-        bool zero = Util.TextAlpha(gameObject, 0.005f);
+        bool zero = Util.TextAlpha(gameObject, 0.008f);
         if (zero) Destroy(gameObject);
     }
 }

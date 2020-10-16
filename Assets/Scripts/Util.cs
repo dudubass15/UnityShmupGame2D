@@ -13,6 +13,8 @@ public static class Util
     public static int level = 1;
     public static int score = 0;
     public static int goCounter = 0;
+    public static int maxAsteroids = 25;
+    public static int asteroidCount = 0;
     public static string camName = "Camera";
 
     public static int RandInt(int min, int max)
@@ -74,6 +76,7 @@ public static class Util
             case "music": loop = true; break;
             case "laser": volume = 0.05f; break;
             case "s_missile": volume = 0.5f; break;
+            case "top-gear-1": volume = 0.5f; break;
             case "s_engineon": volume = 0.3f; pbSpeed = 3f; break;
         }
 
@@ -278,8 +281,47 @@ public static class Util
         GameObject obj = Resources.Load("Explode") as GameObject;
         GameObject go = MonoBehaviour.Instantiate(obj, pos, rot);
         go.name = string.Format("{0:D8}_Explosion", goCounter);
+        Util.CreateFragment(pos, 3f);
         goCounter += 1;
         return go;
+    }
+
+    public static void CreateFragment(Vector2 pos, float magnitude = 1.0f)
+    {
+        float n = 5f * magnitude;
+        for (int i = 0; i < n; i++)
+        {
+            Quaternion rot = Util.AngleToQuarternion(Util.Rand(0f, 360f));
+            GameObject obj = Resources.Load("Fragment") as GameObject;
+            GameObject go = MonoBehaviour.Instantiate(obj, pos, rot);
+            go.name = string.Format("{0:D8}_Fragment", goCounter);
+
+            float size = Util.Rand(1f * magnitude, 5f * magnitude);
+            go.transform.localScale = new Vector3(size, size, 1);
+
+            go.GetComponent<Base>().velX = Util.Rand(-10f * magnitude, 10f * magnitude);
+
+            goCounter += 1;
+        }
+    }
+
+    public static void CreateParticle(GameObject go)
+    {
+        Vector2 pos = go.transform.position;
+        pos.x = pos.x + Util.Rand(-0.1f, 0.1f);
+        pos.y = pos.y + Util.Rand(-0.1f, 0.1f);
+        Quaternion rot = go.transform.rotation;
+        GameObject obj = Resources.Load("Particle") as GameObject;
+        GameObject pgo = MonoBehaviour.Instantiate(obj, pos, rot);
+        pgo.name = string.Format("{0:D8}_Particle", goCounter);
+
+        float size = Util.Rand(5f, 10f);
+        pgo.transform.localScale = new Vector3(size, size, 1);
+
+        pgo.GetComponent<Base>().velX = Util.Rand(5f, 10f) * -go.transform.localScale.x;
+        pgo.GetComponent<Base>().fric = 0.98f;
+
+        goCounter += 1;
     }
 
     public static GameObject CreateSmoke(Vector2 pos, Quaternion rot = default(Quaternion), float vx = 0)
@@ -307,6 +349,16 @@ public static class Util
         return go;
     }
 
+    public static GameObject CreateLifeBar(Vector2 pos)
+    {
+        Quaternion rot = Quaternion.Euler(0, 0, 0);
+        GameObject obj = Resources.Load("LifeBar") as GameObject;
+        GameObject go = MonoBehaviour.Instantiate(obj, pos, rot);
+        go.name = string.Format("{0:D8}_LifeBar", goCounter);
+        goCounter += 1;
+        return go;
+    }
+
     public static GameObject CreateStar(bool first = false)
     {
         float px = 0f;
@@ -329,6 +381,7 @@ public static class Util
         if (scale < 1f) go.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("aste-piece") as Sprite;
         go.transform.localScale = new Vector3(scale, scale, 1);
         go.name = string.Format("{0:D8}_Asteroid", goCounter);
+        Util.asteroidCount++;
         goCounter += 1;
         return go;
     }
@@ -492,6 +545,12 @@ public static class Util
     public static void IgnoreCollision(GameObject a, GameObject b)
     {
         Physics2D.IgnoreCollision(a.GetComponent<Collider2D>(), b.GetComponent<Collider2D>());
+    }
+
+    public static float Dist(GameObject a, GameObject b)
+    {
+        Vector3 diff = a.transform.position - b.transform.position;
+        return diff.sqrMagnitude;
     }
 
 }

@@ -28,7 +28,6 @@ public class Base : MonoBehaviour
     public float alpha = 1.0f;
 
     // gameplay
-    public int life;
     public float born;
     public string owner;
     public int combo = 1;
@@ -38,14 +37,15 @@ public class Base : MonoBehaviour
     public LineRenderer l;
     public List<Vector3> lp;
     public int force = 100;
-    public int maxLife = 100;
+    public float life = 1f;
+    public float maxLife = 100f;
     public bool dead = false;
     public float lastKill = 0;
     public bool collide = true;
     public bool evading = false;
     public bool explosive = true;
     public float safeDistance = 2f;
-    public float comboTime = 2f;
+    public float comboTime = 3f;
     public GameObject lifeBar;
     public int shotLevel = 1;
     public int lifeLost = 0;
@@ -56,6 +56,8 @@ public class Base : MonoBehaviour
     public int keyDownInit = 3;
     public int missileCount = 10;
 
+    public float origScaleX;
+
     public virtual void Start()
     {
         CreateLine();
@@ -63,6 +65,7 @@ public class Base : MonoBehaviour
         born = Time.time;
         down = new bool[KeyNum];
         keys = new KeyCode[KeyNum];
+        origScaleX = transform.localScale.x;
         for (int i = 0; i < KeyNum; i++) down[i] = false;
         acts = new string[] { "UP", "DOWN", "LEFT", "RIGHT", "FIRE1", "FIRE2" };
     }
@@ -134,8 +137,8 @@ public class Base : MonoBehaviour
 
         if (explosive)
         {
-            CameraShake.Shake(Util.Rand(0.10f, 0.30f), Util.Rand(0.1f, 0.7f));
             Util.CreateExplosion(transform.position);
+            CameraShake.Shake(0.25f, 0.5f);
         }
         if (lifeBar) Destroy(lifeBar);
         if (label) Destroy(label);

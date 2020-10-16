@@ -9,14 +9,9 @@ public class Shot2 : Base
     {
         base.Start();
 
-        // GameObject player = GameObject.Find("Player") as GameObject;
-        // float angle = Util.AngleTo(gameObject, player);
-        // bool ok = Mathf.Abs(angle) < 90 ? true : false;
-        // if (ok) Util.LookTo(gameObject, player);
-
         force = Util.RandInt(5, 25);
         explosive = false;
-        velX = -20.0f;
+        velX = -35.0f;
         fric = 1.00f;
         life = 1;
 
@@ -26,6 +21,13 @@ public class Shot2 : Base
     {
         base.Update();
         DestroyOnOut();
+    }
+
+    public override void OnCollisionEnter2D(Collision2D other)
+    {
+        Util.CreateFragment(transform.position);
+        CameraShake.Shake(0.1f, 0.05f);
+        base.OnCollisionEnter2D(other);
     }
 
 }

@@ -10,17 +10,21 @@ public class Enemy1 : Base
     float moveTime = 0f;
     float lastTime = 0f;
     float lastShot = 0f;
+    GameObject healthBar;
     float shotInterval = 0.10f;
 
     public override void Start()
     {
         base.Start();
+        speed = Util.Rand(1f, 5f);
+        accel = Util.Rand(1f, 10f);
+
+        // lifeBar = Resources.Load("Life") as GameObject;
+        // lifeBar = Instantiate(lifeBar);
+
+        healthBar = Util.CreateLifeBar(transform.position);
 
         evades = new string[] { "Player", "Missile", "Asteroid", "Enemy" };
-        lifeBar = Resources.Load("Life") as GameObject;
-        lifeBar = Instantiate(lifeBar);
-        accel = Util.Rand(1f, 10f);
-        speed = Util.Rand(1f, 5f);
 
     }
 
@@ -32,9 +36,10 @@ public class Enemy1 : Base
         transform.rotation = Quaternion.identity;
 
         Vector2 pos = transform.position;
-        Vector2 tPos = new Vector2(pos.x - 0.3f, pos.y + 0.6f);
-        lifeBar.transform.position = tPos;
-        lifeBar.GetComponent<TextMesh>().text = string.Format("{0}", life);
+        healthBar.GetComponent<LifeBar>().SetSize(life / maxLife);
+        healthBar.transform.position = new Vector3(pos.x, pos.y + 0.5f, 0);
+
+        Util.CreateParticle(gameObject);
 
         if (life > 0)
         {
@@ -122,6 +127,11 @@ public class Enemy1 : Base
     public override void OnCollisionEnter2D(Collision2D other)
     {
         base.OnCollisionEnter2D(other);
+    }
+
+    void OnDestroy()
+    {
+        Destroy(healthBar);
     }
 
 }

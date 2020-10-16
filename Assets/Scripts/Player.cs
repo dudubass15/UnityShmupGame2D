@@ -8,6 +8,9 @@ public class Player : Base
 {
 
     bool danger = false;
+    bool advised = false;
+    bool warning = false;
+    GameObject healthBar;
     public float lastShot = 0f;
     public bool lowLife = false;
     public float shotInterval = 0.10f;
@@ -18,9 +21,12 @@ public class Player : Base
         fric = 0.92f;
         accel = 45.0f;
         SetupControl();
-        lifeBar = Resources.Load("Life") as GameObject;
-        lifeBar = Instantiate(lifeBar);
         Util.PlaySound("s_engineon");
+
+        // lifeBar = Resources.Load("Life") as GameObject;
+        // lifeBar = Instantiate(lifeBar);
+
+        healthBar = Util.CreateLifeBar(transform.position);
 
     }
 
@@ -30,9 +36,10 @@ public class Player : Base
         base.Update();
 
         Vector2 pos = transform.position;
-        Vector2 tPos = new Vector2(pos.x + 0.3f, pos.y + 0.6f);
-        lifeBar.transform.position = tPos;
-        lifeBar.GetComponent<TextMesh>().text = string.Format("{0}", life);
+        healthBar.GetComponent<LifeBar>().SetSize(life / maxLife);
+        healthBar.transform.position = new Vector3(pos.x, pos.y + 0.5f, 0);
+
+        Util.CreateParticle(gameObject);
 
         GameControl();
 
@@ -41,7 +48,7 @@ public class Player : Base
 
             Bounce();
 
-            rot = velY / 20;
+            rot = velY / 30;
 
             if (down[4])
             {
@@ -70,9 +77,29 @@ public class Player : Base
             if (life < 10 && !danger)
             {
                 Util.CreateCombo("DANGER: LOW LIFE!");
-                Util.PlaySound("s_danger");
                 danger = true;
             }
+
+            GameObject[] asteroids = GameObject.FindGameObjectsWithTag("Asteroid");
+
+            warning = false;
+
+            foreach (GameObject g in asteroids)
+            {
+                if (Util.Dist(gameObject, g) < 5)
+                {
+                    warning = true;
+                    break;
+                }
+            }
+
+            if (warning && !advised)
+            {
+                Util.PlaySound("s_danger");
+                advised = true;
+            }
+
+            if (!warning) advised = false;
 
             transform.rotation = Util.AngleToQuarternion(rot);
 
@@ -101,13 +128,15 @@ public class Player : Base
             Quaternion rt = Quaternion.Euler(0, 0, 0);
 
             if (i > 0) pos.y += (r * s) * 1f;
-            float a = rot + Util.Rand(-0.05f, 0.05f);
+            float a = rot + Util.Rand(-0.02f, 0.02f);
             if (i == 0) rt = Util.AngleToQuarternion(a);
             else rt = Util.AngleToQuarternion(rot + (r * s));
 
             GameObject go = Util.CreateShot(pos, rt);
-            go.GetComponent<Base>().owner = gameObject.name;
             Util.IgnoreCollision(gameObject, go);
+            go.GetComponent<Base>().owner = gameObject.name;
+            GameObject[] shots = GameObject.FindGameObjectsWithTag("Shot");
+            foreach (GameObject g in shots) Util.IgnoreCollision(gameObject, g);
 
         }
 
@@ -158,6 +187,11 @@ public class Player : Base
 
         else base.OnCollisionEnter2D(other);
 
+    }
+
+    void OnDestroy()
+    {
+        Destroy(healthBar);
     }
 
 }

@@ -17,7 +17,7 @@ public class Main : MonoBehaviour
     int nextAsteroidTime = 0;
     float startDelay = 2f;
     float asteroided = 0;
-    int starCount = 100;
+    int starCount = 200;
 
     string[] alerts = { "CONTROLS: W S A D I O", "ASTEROIDS KEEP SECRETS... DESTROY ALL THEM!" };
     int alertsTotal = 2;
@@ -32,7 +32,7 @@ public class Main : MonoBehaviour
         float f = Util.Rand(0, 10);
         int n = f > 5 ? 19 : 20;
 
-        Util.PlaySound("music");
+        Util.PlaySound("top-gear-1");
 
         started = Time.time;
 
@@ -44,9 +44,6 @@ public class Main : MonoBehaviour
     void Update()
     {
         CreatePlayer();
-
-        player = GameObject.Find("Player");
-        bsPlayer = player.GetComponent<Base>();
 
         if (Time.time - started > startDelay) CreateEnemies();
         if (Time.time - started > startDelay) CreateAsteroid();
@@ -64,17 +61,29 @@ public class Main : MonoBehaviour
             alertCount++;
         }
 
+
+        Rect limits = Util.Limits();
+        GameObject message = GameObject.Find("Message");
+        message.transform.position = new Vector3(0, limits.yMax - 0.5f, 0);
+
+        if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
+
     }
 
     void CreatePlayer()
     {
+
+        player = GameObject.Find("Player");
+        bsPlayer = player.GetComponent<Base>();
+
         if (!player)
         {
             lifeCount += 1;
             Rect rect = Util.Limits();
-            Vector2 pos = new Vector2(rect.x - 0.5f, 0);
+            Vector2 pos = new Vector2(rect.x - 1f, 0);
             player = Util.CreatePlayer(pos, Quaternion.identity);
         }
+
     }
 
     void CreateAsteroid()
@@ -111,6 +120,9 @@ public class Main : MonoBehaviour
                 Vector2 pos = new Vector2(rect.xMax + r1, r2);
                 enemies[i] = Util.CreateEnemy1(pos, Quaternion.identity);
                 enemies[i].GetComponent<Base>().missileCount = 1;
+                string s = string.Format("Spaceship{0}", UnityEngine.Random.Range(1, 4));
+                enemies[i].GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(s) as Sprite;
+
             }
 
         }

@@ -14,6 +14,7 @@ public class CameraShake : MonoBehaviour
     void Awake()
     {
         instance = this;
+        instance._originalPos = instance.gameObject.transform.localPosition;
     }
 
     void Update()
@@ -26,7 +27,6 @@ public class CameraShake : MonoBehaviour
 
     public static void Shake(float duration, float amount)
     {
-        instance._originalPos = instance.gameObject.transform.localPosition;
         instance.StopAllCoroutines();
         instance.StartCoroutine(instance.cShake(duration, amount));
     }

@@ -28,6 +28,8 @@ public class Missile : Base
         base.Update();
         DestroyOnOut();
 
+        Util.CreateParticle(gameObject);
+
         if (target) Util.RotateTo(gameObject, target);
 
         else if (Mathf.Abs(velX) > 1f)
@@ -48,16 +50,8 @@ public class Missile : Base
 
         accel += 0.1f;
 
-        StartCoroutine(CreateSmoke());
-        smokeTime = Time.time;
 
-    }
 
-    IEnumerator CreateSmoke(float t = 0.05f)
-    {
-        Vector2 pos = (transform.position);
-        yield return new WaitForSeconds(t);
-        if (Mathf.Abs(velX) > 1f) Util.CreateSmoke(pos, transform.rotation, velX);
     }
 
     void OnDestroy()

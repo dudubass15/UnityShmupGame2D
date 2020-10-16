@@ -52,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 8
   m_Sprite: {fileID: 21300000, guid: 8eb8ef61ec8e23f419f9bc747ca25d00, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -103,7 +103,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!61 &6969620327939345341
 BoxCollider2D:
@@ -156,7 +156,6 @@ MonoBehaviour:
   KeyNum: 6
   pressed: 0
   alpha: 1
-  life: 100
   born: 0
   owner: 
   combo: 1
@@ -166,6 +165,7 @@ MonoBehaviour:
   l: {fileID: 0}
   lp: []
   force: 100
+  life: 100
   maxLife: 100
   dead: 0
   lastKill: 0
@@ -180,3 +180,7 @@ MonoBehaviour:
   target: {fileID: 0}
   evades: []
   targeted: 0
+  targetTag: 
+  keyDownInit: 3
+  missileCount: 10
+  origScaleX: 0

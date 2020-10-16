@@ -10,7 +10,7 @@ public class Asteroid : Base
         base.Start();
 
         fric = 1.0f;
-        life = Util.RandInt(30, 50);
+        life = Util.RandInt(20, 40);
 
     }
 
@@ -29,12 +29,14 @@ public class Asteroid : Base
     public override void OnCollisionEnter2D(Collision2D other)
     {
 
-        if (Time.time - born > 1f)
+        if (Util.asteroidCount >= Util.maxAsteroids) Destroy(gameObject);
+
+        else if (Time.time - born > 1f)
         {
 
             life -= other.gameObject.GetComponent<Base>().force;
 
-            Vector3 scale = transform.lossyScale;
+            Vector3 scale = transform.localScale;
 
             if (life <= 0)
             {
@@ -42,14 +44,14 @@ public class Asteroid : Base
                 if (scale.x > 0.5f)
                 {
 
-                    int n = Util.RandInt(4, 7);
+                    int n = Random.Range(2, 5);
 
-                    if (Util.RandInt(0, 99) < 2 && Util.PlayerBase().shotLevel < 5) { Util.CreatePowerUp(transform.position); }
+                    if (Util.RandInt(0, 99) < 5 && Util.PlayerBase().shotLevel < 5) { Util.CreatePowerUp(transform.position); }
 
                     for (int i = 0; i < n; i++)
                     {
 
-                        float s = scale.x / (n / 2);
+                        float s = (scale.x / Random.Range(2, 5));
                         GameObject go = Util.CreateAsteroid(transform.position, s);
 
                         go.GetComponent<Base>().velX = Util.Rand(-1f, 1f);
@@ -68,6 +70,11 @@ public class Asteroid : Base
             }
 
         }
+    }
+
+    void OnDestroy()
+    {
+        Util.asteroidCount--;
     }
 
 }
