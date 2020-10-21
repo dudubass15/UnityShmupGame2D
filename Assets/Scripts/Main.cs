@@ -34,9 +34,9 @@ public class Main : MonoBehaviour
         float f = Util.Rand(0, 10);
         int n = f > 5 ? 19 : 20;
 
-        Util.CreatePlanet(true);
-
         started = Time.time;
+
+        Util.CreatePlanet();
 
         Util.Larry(n);
 

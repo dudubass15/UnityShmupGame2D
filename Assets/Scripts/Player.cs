@@ -99,7 +99,7 @@ public class Player : Base
 
                 if (g.GetComponent<Base>().owner == name) continue;
 
-                if (Util.Dist(gameObject, g) < 10)
+                if (Util.Dist(gameObject, g) < 15)
                 {
                     if (Util.AngleTo(g, gameObject) < 15)
                     {
