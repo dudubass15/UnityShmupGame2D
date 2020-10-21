@@ -18,6 +18,8 @@ public static class Util
     public static int asteroidCount = 0;
     public static string camName = "Camera";
 
+    public static AudioSource music;
+
     public static int RandInt(int min, int max)
     {
         System.Random rand = new System.Random();
@@ -33,6 +35,7 @@ public static class Util
     public static AudioSource lastAudio;
     public static void Combo(int n = -1)
     {
+        n = (n > 26) ? 26 : n;
         if (lastAudio) lastAudio.Stop();
         if (n < 0) n = (int)Util.Rand(0, 26);
         lastAudio = Util.PlaySound(string.Format("combo{0}", n));
@@ -79,7 +82,7 @@ public static class Util
             case "music": loop = true; break;
             case "laser": volume = 0.05f; break;
             case "s_missile": volume = 0.5f; break;
-            case "top-gear-1": volume = 0.3f; break;
+            case "top-gear-1": volume = 0.5f; break;
             case "s_engineon": volume = 0.3f; pbSpeed = 3f; break;
         }
 

@@ -85,6 +85,7 @@ public class Player : Base
             if (Util.speed < 1.0f && Util.speed > 0.1f && !slowmoAux)
             {
                 Util.PlaySound("s_slowmo_out");
+                Util.music.pitch = 1.0f;
                 slowmoAux = true;
             }
 
@@ -113,13 +114,14 @@ public class Player : Base
             {
                 Util.PlaySound("s_slowmo_in");
                 Util.PlaySound("s_danger");
+                Util.music.pitch = 0.5f;
                 slowmoAux = false;
                 advised = true;
             }
 
             if (!warning) advised = false;
 
-            transform.rotation = Util.AngleToQuarternion(rot);
+            transform.rotation = Util.AngleToQuarternion(rot * speed);
 
         }
         else
@@ -199,7 +201,21 @@ public class Player : Base
         if (other.gameObject.tag == "PowerUp")
         {
             Util.PlaySound("s_powerup");
+
+            if (missileCount < 100)
+            {
+                if (missileCount > 95)
+                {
+                    missileCount = 99;
+                }
+                else
+                {
+                    missileCount += 2;
+                }
+            }
+
             shotLevel++;
+
         }
 
         else base.OnCollisionEnter2D(other);

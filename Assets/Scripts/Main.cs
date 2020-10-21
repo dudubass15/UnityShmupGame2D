@@ -29,16 +29,16 @@ public class Main : MonoBehaviour
 
         for (int i = 0; i < starCount; i++) Util.CreateStar(true);
 
+        Util.music = Util.PlaySound("top-gear-1");
+
         float f = Util.Rand(0, 10);
         int n = f > 5 ? 19 : 20;
 
-        Util.PlaySound("top-gear-1");
+        Util.CreatePlanet(true);
 
         started = Time.time;
 
         Util.Larry(n);
-
-        Util.CreatePlanet(true);
 
     }
 
@@ -80,6 +80,8 @@ public class Main : MonoBehaviour
         if (!player)
         {
             lifeCount += 1;
+            Util.speed = 1.0f;
+            Util.music.pitch = 1.0f;
             Rect rect = Util.Limits();
             Vector2 pos = new Vector2(rect.x - 1f, 0);
             player = Util.CreatePlayer(pos, Quaternion.identity);
@@ -140,17 +142,6 @@ public class Main : MonoBehaviour
 
             if (n == numEnemies)
             {
-                if (bsPlayer.missileCount < 100)
-                {
-                    if (bsPlayer.missileCount > 95)
-                    {
-                        bsPlayer.missileCount = 99;
-                    }
-                    else
-                    {
-                        bsPlayer.missileCount += 5;
-                    }
-                }
 
                 Util.level++;
 
