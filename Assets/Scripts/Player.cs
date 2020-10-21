@@ -17,6 +17,7 @@ public class Player : Base
     public GameObject exaustPoint;
     public float shotInterval = 0.10f;
 
+    bool slowmoAux = false;
     public override void Start()
     {
         base.Start();
@@ -81,24 +82,38 @@ public class Player : Base
 
             GameObject[] missiles = GameObject.FindGameObjectsWithTag("Missile");
 
-            if (Util.speed < 1.0f) Util.speed += 0.05f;
+            if (Util.speed < 1.0f && Util.speed > 0.1f && !slowmoAux)
+            {
+                Util.PlaySound("s_slowmo_out");
+                slowmoAux = true;
+            }
+
+            if (Util.speed < 1.0f) Util.speed += Util.speed / 10f;
+            else Util.speed = 1.0f;
             warning = false;
             speed = 1.0f;
 
             foreach (GameObject g in missiles)
             {
+
                 if (g.GetComponent<Base>().owner == name) continue;
+
                 if (Util.Dist(gameObject, g) < 10)
                 {
-                    Util.speed = 0.1f;
-                    warning = true;
-                    break;
+                    if (Util.AngleTo(g, gameObject) < 15)
+                    {
+                        Util.speed = 0.1f;
+                        warning = true;
+                        break;
+                    }
                 }
             }
 
             if (warning && !advised)
             {
+                Util.PlaySound("s_slowmo_in");
                 Util.PlaySound("s_danger");
+                slowmoAux = false;
                 advised = true;
             }
 

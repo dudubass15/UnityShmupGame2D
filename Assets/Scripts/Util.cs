@@ -79,7 +79,7 @@ public static class Util
             case "music": loop = true; break;
             case "laser": volume = 0.05f; break;
             case "s_missile": volume = 0.5f; break;
-            case "top-gear-1": volume = 0.5f; break;
+            case "top-gear-1": volume = 0.3f; break;
             case "s_engineon": volume = 0.3f; pbSpeed = 3f; break;
         }
 

@@ -39,7 +39,7 @@ public class Enemy1 : Base
         healthBar.transform.position = new Vector3(pos.x, pos.y + 0.5f, 0);
 
         Util.CreateParticle(gameObject, 2f, exaustPoint);
-]
+
         if (life > 0)
         {
 
@@ -52,7 +52,7 @@ public class Enemy1 : Base
             if (Time.time - lastTime >= moveTime)
             {
 
-                btnNum = UnityEngine.Random.Range(0, down.Length + (int)(300 / Util.level));
+                btnNum = UnityEngine.Random.Range(0, down.Length + (int)(10 / Util.level));
                 for (int i = 0; i < down.Length; i++) down[i] = false;
                 moveTime = UnityEngine.Random.Range(0.3f, 0.7f);
 
@@ -72,7 +72,7 @@ public class Enemy1 : Base
 
             if (down[4])
             {
-                if (Time.time - lastShot > shotInterval)
+                if (Time.time - lastShot > shotInterval / speed)
                 {
                     lastShot = Time.time;
                     Shot();
