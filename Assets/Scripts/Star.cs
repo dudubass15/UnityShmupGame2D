@@ -24,8 +24,8 @@ public class Star : Base
     {
         base.Update();
         Rect l = Util.Limits();
-        float flat = (((velX * -1) - minVel) * 100 / maxVel);
-        if (flat > origScaleX) transform.localScale = new Vector3(flat, origScaleX, 1);
+        // float flat = (((velX * -1) - minVel) * 100 / maxVel);
+        // if (flat > origScaleX) transform.localScale = new Vector3(flat, origScaleX, 1);
         if (transform.position.x < l.xMin)
         {
             Util.CreateStar();

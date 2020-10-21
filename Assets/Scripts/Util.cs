@@ -29,10 +29,12 @@ public static class Util
         Util.PlaySound(string.Format("larry{0}", n));
     }
 
+    public static AudioSource lastAudio;
     public static void Combo(int n = -1)
     {
+        if (lastAudio) lastAudio.Stop();
         if (n < 0) n = (int)Util.Rand(0, 26);
-        Util.PlaySound(string.Format("combo{0}", n));
+        lastAudio = Util.PlaySound(string.Format("combo{0}", n));
     }
 
     public static void Victory(int n = -1)
@@ -64,7 +66,7 @@ public static class Util
         audio.Play();
     }
 
-    public static void PlaySound(string name, bool loop = false, float volume = 1.0f, float pbSpeed = 1f)
+    public static AudioSource PlaySound(string name, bool loop = false, float volume = 1.0f, float pbSpeed = 1f)
     {
 
         if (Util.FindText(name, "combo")) { volume = 20f; }
@@ -89,10 +91,10 @@ public static class Util
         goCounter += 1;
         audio.Play();
 
-        if (!loop)
-        {
-            MonoBehaviour.Destroy(m, audio.clip.length);
-        }
+        if (!loop) MonoBehaviour.Destroy(m, audio.clip.length);
+
+        return audio;
+
     }
 
     public static VideoPlayer PlayVideo(string resName)
@@ -306,7 +308,7 @@ public static class Util
         }
     }
 
-    public static void CreateParticle(GameObject go, float mag = 1f)
+    public static void CreateParticle(GameObject go, float mag = 1.0f, GameObject exaustPoint = null)
     {
 
         Base goBase = go.GetComponent<Base>();
@@ -314,7 +316,7 @@ public static class Util
 
         if (goBase.velX * sx < -0.1f) return;
 
-        Vector2 pos = go.transform.position;
+        Vector2 pos = exaustPoint ? exaustPoint.transform.position : go.transform.position;
         pos.x = pos.x + Util.Rand(-0.1f, 0.1f);
         pos.y = pos.y + Util.Rand(-0.1f, 0.1f);
         Quaternion rot = go.transform.rotation;
@@ -326,6 +328,8 @@ public static class Util
         pgo.transform.localScale = new Vector3(size, size, 1);
 
         pgo.GetComponent<Base>().velX = Util.Rand(5f, 10f) * -sx;
+        if (sx < 0) pgo.GetComponent<Particle>().SetColor(2);
+        else pgo.GetComponent<Particle>().SetColor(1);
         pgo.GetComponent<Base>().fric = 0.98f;
 
         goCounter += 1;
@@ -377,6 +381,22 @@ public static class Util
         GameObject obj = Resources.Load("Star") as GameObject;
         GameObject go = MonoBehaviour.Instantiate(obj, pos, Quaternion.identity);
         go.name = string.Format("{0:D8}_Star", goCounter);
+        goCounter += 1;
+        return go;
+    }
+
+    public static GameObject CreatePlanet(bool first = false)
+    {
+        float px = 0f;
+        Rect l = Util.Limits();
+        float py = Util.Rand(l.yMin, l.yMax);
+        if (first) px = Util.Rand(l.xMin, l.xMax);
+        else px = l.xMax + Util.RandInt(5, 10);
+        Vector2 pos = new Vector2(px, py);
+        GameObject obj = Resources.Load("Planet") as GameObject;
+        GameObject go = MonoBehaviour.Instantiate(obj, pos, Quaternion.identity);
+        // go.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("planets/1") as Sprite;
+        go.name = string.Format("{0:D8}_Planet", goCounter);
         goCounter += 1;
         return go;
     }
@@ -549,6 +569,18 @@ public static class Util
         a.transform.rotation = Quaternion.RotateTowards(a.transform.rotation, targetRotation, speed * a.transform.localScale.x);
     }
 
+    public static Quaternion GetRotateTo(GameObject a, GameObject b)
+    {
+        Vector3 myLocation = a.transform.position;
+        Vector3 targetLocation = b.transform.position;
+        targetLocation.z = myLocation.z;
+
+        Vector3 vectorToTarget = targetLocation - myLocation;
+        Vector3 rotatedVectorToTarget = Quaternion.Euler(0, 0, 90) * vectorToTarget;
+
+        return Quaternion.LookRotation(forward: Vector3.forward, upwards: rotatedVectorToTarget);
+    }
+
     public static void IgnoreCollision(GameObject a, GameObject b)
     {
         Physics2D.IgnoreCollision(a.GetComponent<Collider2D>(), b.GetComponent<Collider2D>());
@@ -558,6 +590,11 @@ public static class Util
     {
         Vector3 diff = a.transform.position - b.transform.position;
         return diff.sqrMagnitude;
+    }
+
+    public static float AngleTo(GameObject a, GameObject b)
+    {
+        return Math.Abs(Vector3.Angle(a.transform.right, a.transform.position - b.transform.position));
     }
 
 }

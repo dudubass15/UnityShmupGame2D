@@ -303,8 +303,6 @@ public class Base : MonoBehaviour
                 lp[0] = transform.position;
                 lp[1] = closest.transform.position;
 
-                // transform.position = Vector2.MoveTowards(transform.position, closest.transform.position, -speed);
-
                 float dx = transform.position.x - closest.transform.position.x;
                 float dy = transform.position.y - closest.transform.position.y;
 

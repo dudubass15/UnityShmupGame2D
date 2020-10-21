@@ -14,8 +14,10 @@ public class GameHandler : MonoBehaviour
     void Start()
     {
 
-        loader =  GameObject.Find("Loading").GetComponent<TextMeshPro>();
+        loader = GameObject.Find("Loading").GetComponent<TextMeshPro>();
         loadingOperation = SceneManager.LoadSceneAsync("Main");
+
+        Cursor.visible = false;
 
     }
 

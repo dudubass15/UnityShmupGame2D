@@ -11,16 +11,15 @@ public class Enemy1 : Base
     float lastTime = 0f;
     float lastShot = 0f;
     GameObject healthBar;
-    float shotInterval = 0.10f;
+    float shotInterval = 0.3f;
+    public GameObject bulletPoint;
+    public GameObject exaustPoint;
 
     public override void Start()
     {
         base.Start();
-        speed = Util.Rand(1f, 5f);
-        accel = Util.Rand(1f, 10f);
-
-        // lifeBar = Resources.Load("Life") as GameObject;
-        // lifeBar = Instantiate(lifeBar);
+        fric = 0.92f;
+        accel = Util.Rand(10f, 20f);
 
         healthBar = Util.CreateLifeBar(transform.position);
 
@@ -39,7 +38,7 @@ public class Enemy1 : Base
         healthBar.GetComponent<LifeBar>().SetSize(life / maxLife);
         healthBar.transform.position = new Vector3(pos.x, pos.y + 0.5f, 0);
 
-        Util.CreateParticle(gameObject);
+        Util.CreateParticle(gameObject, 2f, exaustPoint);
 
         if (life > 0)
         {
@@ -53,8 +52,7 @@ public class Enemy1 : Base
             if (Time.time - lastTime >= moveTime)
             {
 
-                GameObject player = GameObject.Find("Player") as GameObject;
-                btnNum = UnityEngine.Random.Range(0, down.Length + 10);
+                btnNum = UnityEngine.Random.Range(0, down.Length + (int)(300 / Util.level));
                 for (int i = 0; i < down.Length; i++) down[i] = false;
                 moveTime = UnityEngine.Random.Range(0.3f, 0.7f);
 
@@ -68,6 +66,9 @@ public class Enemy1 : Base
                 lastTime = Time.time;
 
             }
+
+            GameObject player = GameObject.Find("Player") as GameObject;
+            down[4] = (player && Util.AngleTo(gameObject, player) < 1f);
 
             if (down[4])
             {
@@ -119,9 +120,7 @@ public class Enemy1 : Base
 
     Vector2 ShotPosition()
     {
-        Vector2 pos = transform.position;
-        // pos.x = pos.x - 0.6f;
-        return pos;
+        return bulletPoint.transform.position;
     }
 
     public override void OnCollisionEnter2D(Collision2D other)

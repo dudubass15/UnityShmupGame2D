@@ -38,6 +38,8 @@ public class Main : MonoBehaviour
 
         Util.Larry(n);
 
+        Util.CreatePlanet(true);
+
     }
 
     public CameraShake cameraShake;

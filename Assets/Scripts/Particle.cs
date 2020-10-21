@@ -5,6 +5,8 @@ using UnityEngine;
 public class Particle : Base
 {
 
+    public float colorSpeed = 0.07f;
+    public float alphaSpeed = 0.02f;
     public override void Start()
     {
         base.Start();
@@ -17,12 +19,20 @@ public class Particle : Base
         if (color.a <= 0) Destroy(gameObject);
         else
         {
-            color.r += 0.05f;
-            color.g += 0.05f;
-            color.b += 0.05f;
-            color.a -= 0.01f;
+            color.r += colorSpeed;
+            color.g += colorSpeed;
+            color.b += colorSpeed;
+            color.a -= alphaSpeed;
             GetComponent<SpriteRenderer>().color = color;
         }
+    }
+
+    public void SetColor(int color = 1)
+    {
+        Color c = new Color(0, 0, 0);
+        if (color == 1) c.r = 255;
+        if (color == 2) c.g = 255;
+        GetComponent<SpriteRenderer>().color = c;
     }
 
 }

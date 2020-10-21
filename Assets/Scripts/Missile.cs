@@ -5,6 +5,8 @@ using UnityEngine;
 public class Missile : Base
 {
 
+    public GameObject exaustPoint;
+    public bool ignoreTagged = false;
     public override void Start()
     {
         base.Start();
@@ -29,14 +31,14 @@ public class Missile : Base
         base.Update();
         DestroyOnOut();
 
-        Util.CreateParticle(gameObject);
+        Util.CreateParticle(gameObject, 1f, exaustPoint);
 
         if (target) Util.RotateTo(gameObject, target, velR);
 
         else if (Mathf.Abs(velX) > 1f)
         {
 
-            target = Util.FindClosestTagged(gameObject, targetTag, true);
+            target = Util.FindClosestTagged(gameObject, targetTag, ignoreTagged);
 
             if (target)
             {

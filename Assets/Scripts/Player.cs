@@ -13,6 +13,8 @@ public class Player : Base
     GameObject healthBar;
     public float lastShot = 0f;
     public bool lowLife = false;
+    public GameObject bulletPoint;
+    public GameObject exaustPoint;
     public float shotInterval = 0.10f;
 
     public override void Start()
@@ -22,9 +24,6 @@ public class Player : Base
         accel = 45.0f;
         SetupControl();
         Util.PlaySound("s_engineon");
-
-        // lifeBar = Resources.Load("Life") as GameObject;
-        // lifeBar = Instantiate(lifeBar);
 
         healthBar = Util.CreateLifeBar(transform.position);
 
@@ -39,7 +38,7 @@ public class Player : Base
         healthBar.GetComponent<LifeBar>().SetSize(life / maxLife);
         healthBar.transform.position = new Vector3(pos.x, pos.y + 0.5f, 0);
 
-        Util.CreateParticle(gameObject, 2f);
+        Util.CreateParticle(gameObject, 2f, exaustPoint);
 
         GameControl();
 
@@ -149,6 +148,7 @@ public class Player : Base
 
             GameObject go = Util.CreateMissile(ShotPosition(), transform.rotation);
             go.GetComponent<Base>().owner = gameObject.name;
+            go.GetComponent<Missile>().ignoreTagged = true;
             go.GetComponent<Base>().targetTag = "Enemy";
             Util.IgnoreCollision(gameObject, go);
             GetComponent<Base>().missileCount--;
@@ -171,9 +171,7 @@ public class Player : Base
 
     Vector2 ShotPosition(int r = 0)
     {
-        Vector2 pos = transform.position;
-        // pos.x = pos.x + 0.6f;
-        return pos;
+        return bulletPoint.transform.position;
     }
 
     public override void OnCollisionEnter2D(Collision2D other)

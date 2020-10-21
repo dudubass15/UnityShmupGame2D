@@ -56,8 +56,8 @@ public class Asteroid : Base
 
                         go.GetComponent<Base>().velX = Util.Rand(-1f, 1f);
                         go.GetComponent<Base>().velY = Util.Rand(-1f, 1f);
-                        go.GetComponent<Base>().life = (int)(maxLife * s);
                         go.GetComponent<Base>().force = (int)(force * s);
+                        go.GetComponent<Base>().life = 1;
 
                     }
 
