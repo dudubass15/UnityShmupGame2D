@@ -39,7 +39,7 @@ public class Player : Base
         healthBar.GetComponent<LifeBar>().SetSize(life / maxLife);
         healthBar.transform.position = new Vector3(pos.x, pos.y + 0.5f, 0);
 
-        Util.CreateParticle(gameObject);
+        Util.CreateParticle(gameObject, 2f);
 
         GameControl();
 

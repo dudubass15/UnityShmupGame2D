@@ -74,7 +74,6 @@ public class Main : MonoBehaviour
     {
 
         player = GameObject.Find("Player");
-        bsPlayer = player.GetComponent<Base>();
 
         if (!player)
         {
@@ -83,6 +82,8 @@ public class Main : MonoBehaviour
             Vector2 pos = new Vector2(rect.x - 1f, 0);
             player = Util.CreatePlayer(pos, Quaternion.identity);
         }
+
+        bsPlayer = player.GetComponent<Base>();
 
     }
 

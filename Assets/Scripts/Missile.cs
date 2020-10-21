@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class Missile : Base
 {
-    float smokeTime = 0f;
+
     public override void Start()
     {
         base.Start();
 
         life = 1;
         fric = 1f;
+        velX = -0.5f;
         accel = 0.1f;
         down[keyDownInit] = true;
         StartCoroutine(PlaySound());
@@ -30,14 +31,12 @@ public class Missile : Base
 
         Util.CreateParticle(gameObject);
 
-        if (target) Util.RotateTo(gameObject, target);
+        if (target) Util.RotateTo(gameObject, target, velR);
 
         else if (Mathf.Abs(velX) > 1f)
         {
 
             target = Util.FindClosestTagged(gameObject, targetTag, true);
-
-            GetComponent<Animator>().SetBool("Idle", false);
 
             if (target)
             {
@@ -49,8 +48,6 @@ public class Missile : Base
         }
 
         accel += 0.1f;
-
-
 
     }
 

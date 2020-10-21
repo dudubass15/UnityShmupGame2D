@@ -81,7 +81,7 @@ TextMesh:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9031556656470445072}
   m_Text: 100
-  m_OffsetZ: 0
+  m_OffsetZ: 1
   m_CharacterSize: 0.12
   m_LineSpacing: 1
   m_Anchor: 4
@@ -119,20 +119,31 @@ MonoBehaviour:
   KeyNum: 5
   pressed: 0
   alpha: 1
-  life: 0
   born: 0
   owner: 
+  combo: 0
   score: 0
   kills: 0
   label: {fileID: 0}
   l: {fileID: 0}
   lp: []
   force: 100
+  life: 0
   maxLife: 100
   dead: 0
-  combo: 0
   lastKill: 0
   collide: 1
   evading: 0
   explosive: 1
   safeDistance: 2
+  comboTime: 3
+  lifeBar: {fileID: 0}
+  shotLevel: 1
+  lifeLost: 0
+  target: {fileID: 0}
+  evades: []
+  targeted: 0
+  targetTag: 
+  keyDownInit: 3
+  missileCount: 10
+  origScaleX: 0

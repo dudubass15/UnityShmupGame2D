@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5716326843351491988}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.03, y: 0.03, z: -362.99414}
+  m_LocalPosition: {x: 0.03, y: 0.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -119,7 +119,6 @@ MonoBehaviour:
   KeyNum: 6
   pressed: 0
   alpha: 1
-  life: 0
   born: 0
   owner: 
   combo: 0
@@ -129,6 +128,7 @@ MonoBehaviour:
   l: {fileID: 0}
   lp: []
   force: 100
+  life: 0
   maxLife: 100
   dead: 0
   lastKill: 0
@@ -141,3 +141,9 @@ MonoBehaviour:
   shotLevel: 1
   lifeLost: 0
   target: {fileID: 0}
+  evades: []
+  targeted: 0
+  targetTag: 
+  keyDownInit: 3
+  missileCount: 10
+  origScaleX: 0

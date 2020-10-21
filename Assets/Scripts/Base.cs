@@ -15,6 +15,7 @@ public class Base : MonoBehaviour
     public float fric = 0.89f;
     public float velX = 0.0f;
     public float velY = 0.0f;
+    public float velR = 0.0f;
     public float rot = 0.0f;
 
     // controls

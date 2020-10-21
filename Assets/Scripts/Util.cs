@@ -240,11 +240,12 @@ public static class Util
         return go;
     }
 
-    public static GameObject CreateMissile(Vector2 pos, Quaternion rot = default(Quaternion))
+    public static GameObject CreateMissile(Vector2 pos, Quaternion rot = default(Quaternion), float velRot = 1f)
     {
         GameObject obj = Resources.Load("Missile") as GameObject;
         GameObject go = MonoBehaviour.Instantiate(obj, pos, rot);
         go.name = string.Format("{0:D8}_Missile", goCounter);
+        go.GetComponent<Base>().velR = velRot;
         goCounter += 1;
         return go;
     }
@@ -305,8 +306,14 @@ public static class Util
         }
     }
 
-    public static void CreateParticle(GameObject go)
+    public static void CreateParticle(GameObject go, float mag = 1f)
     {
+
+        Base goBase = go.GetComponent<Base>();
+        float sx = goBase.transform.localScale.x;
+
+        if (goBase.velX * sx < -0.1f) return;
+
         Vector2 pos = go.transform.position;
         pos.x = pos.x + Util.Rand(-0.1f, 0.1f);
         pos.y = pos.y + Util.Rand(-0.1f, 0.1f);
@@ -315,10 +322,10 @@ public static class Util
         GameObject pgo = MonoBehaviour.Instantiate(obj, pos, rot);
         pgo.name = string.Format("{0:D8}_Particle", goCounter);
 
-        float size = Util.Rand(5f, 10f);
+        float size = Util.Rand(5f, 10f) * mag;
         pgo.transform.localScale = new Vector3(size, size, 1);
 
-        pgo.GetComponent<Base>().velX = Util.Rand(5f, 10f) * -go.transform.localScale.x;
+        pgo.GetComponent<Base>().velX = Util.Rand(5f, 10f) * -sx;
         pgo.GetComponent<Base>().fric = 0.98f;
 
         goCounter += 1;
@@ -528,7 +535,7 @@ public static class Util
         return GameObject.Find("Player").GetComponent<Base>();
     }
 
-    public static void RotateTo(GameObject a, GameObject b, float speed = 0.5f)
+    public static void RotateTo(GameObject a, GameObject b, float speed = 1f)
     {
         Vector3 myLocation = a.transform.position;
         Vector3 targetLocation = b.transform.position;
