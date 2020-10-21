@@ -19,10 +19,10 @@ public class Particle : Base
         if (color.a <= 0) Destroy(gameObject);
         else
         {
-            color.r += colorSpeed;
-            color.g += colorSpeed;
-            color.b += colorSpeed;
-            color.a -= alphaSpeed;
+            color.r += colorSpeed * speed;
+            color.g += colorSpeed * speed;
+            color.b += colorSpeed * speed;
+            color.a -= alphaSpeed * speed;
             GetComponent<SpriteRenderer>().color = color;
         }
     }

@@ -51,7 +51,7 @@ public class Player : Base
 
             if (down[4])
             {
-                if (Time.time - lastShot > shotInterval)
+                if (Time.time - lastShot > shotInterval / speed)
                 {
                     lastShot = Time.time;
                     Shot();
@@ -60,7 +60,7 @@ public class Player : Base
 
             if (down[5])
             {
-                if (Time.time - lastShot > shotInterval)
+                if (Time.time - lastShot > shotInterval / speed)
                 {
                     lastShot = Time.time;
                     Missile();
@@ -79,14 +79,18 @@ public class Player : Base
                 danger = true;
             }
 
-            GameObject[] asteroids = GameObject.FindGameObjectsWithTag("Asteroid");
+            GameObject[] missiles = GameObject.FindGameObjectsWithTag("Missile");
 
+            if (Util.speed < 1.0f) Util.speed += 0.05f;
             warning = false;
+            speed = 1.0f;
 
-            foreach (GameObject g in asteroids)
+            foreach (GameObject g in missiles)
             {
-                if (Util.Dist(gameObject, g) < 5)
+                if (g.GetComponent<Base>().owner == name) continue;
+                if (Util.Dist(gameObject, g) < 10)
                 {
+                    Util.speed = 0.1f;
                     warning = true;
                     break;
                 }

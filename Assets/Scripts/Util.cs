@@ -12,6 +12,7 @@ public static class Util
 
     public static int level = 1;
     public static int score = 0;
+    public static float speed = 1f;
     public static int goCounter = 0;
     public static int maxAsteroids = 25;
     public static int asteroidCount = 0;

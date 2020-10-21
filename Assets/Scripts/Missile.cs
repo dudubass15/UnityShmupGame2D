@@ -33,7 +33,7 @@ public class Missile : Base
 
         Util.CreateParticle(gameObject, 1f, exaustPoint);
 
-        if (target) Util.RotateTo(gameObject, target, velR);
+        if (target) Util.RotateTo(gameObject, target, velR * speed);
 
         else if (Mathf.Abs(velX) > 1f)
         {

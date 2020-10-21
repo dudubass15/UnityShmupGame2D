@@ -39,7 +39,7 @@ public class Enemy1 : Base
         healthBar.transform.position = new Vector3(pos.x, pos.y + 0.5f, 0);
 
         Util.CreateParticle(gameObject, 2f, exaustPoint);
-
+]
         if (life > 0)
         {
 

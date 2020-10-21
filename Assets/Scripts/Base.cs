@@ -11,7 +11,7 @@ public class Base : MonoBehaviour
 
     // movement
     public float accel = 20.0f;
-    public float speed = 0.0f;
+    public float speed = 1.0f;
     public float fric = 0.89f;
     public float velX = 0.0f;
     public float velY = 0.0f;
@@ -75,6 +75,7 @@ public class Base : MonoBehaviour
     {
 
         lp = new List<Vector3> { transform.position, transform.position };
+        speed = Util.speed;
         Move();
 
     }
@@ -164,7 +165,10 @@ public class Base : MonoBehaviour
 
         if (Time.time - lastKill > comboTime) combo = 1;
 
-        transform.Translate(new Vector2(velX * Time.deltaTime, velY * Time.deltaTime));
+        float mx = velX * Time.deltaTime * speed;
+        float my = velY * Time.deltaTime * speed;
+
+        transform.Translate(new Vector2(mx, my));
 
     }
     public virtual void GameControl()
