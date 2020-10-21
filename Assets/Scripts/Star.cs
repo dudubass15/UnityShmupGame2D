@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class Star : Base
 {
-    float minVel = 1f;
-    float maxVel = 10f;
+    float minVel = 0.1f;
+    float maxVel = 1.0f;
     public override void Start()
     {
         base.Start();
 
         fric = 1.0f;
         velX = -Util.Rand(minVel, maxVel);
-        transform.localScale = new Vector3(velX, velX, 1);
+        transform.localScale = new Vector3(velX * 5f, velX * 5f, 1);
 
         Color color = GetComponent<SpriteRenderer>().color;
-        color.a = (velX * -1) / (maxVel * 2);
+        color.a = (velX * -1);
         GetComponent<SpriteRenderer>().color = color;
 
     }

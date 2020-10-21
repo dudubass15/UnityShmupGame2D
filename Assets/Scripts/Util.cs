@@ -395,7 +395,7 @@ public static class Util
         Vector2 pos = new Vector2(px, py);
         GameObject obj = Resources.Load("Planet") as GameObject;
         GameObject go = MonoBehaviour.Instantiate(obj, pos, Quaternion.identity);
-        // go.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("planets/1") as Sprite;
+        go.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(string.Format("planets/{0}", RandInt(0, 4))) as Sprite;
         go.name = string.Format("{0:D8}_Planet", goCounter);
         goCounter += 1;
         return go;
