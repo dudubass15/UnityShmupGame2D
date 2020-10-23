@@ -63,7 +63,6 @@ public class Main : MonoBehaviour
             alertCount++;
         }
 
-
         Rect limits = Util.Limits();
         GameObject message = GameObject.Find("Message");
         message.transform.position = new Vector3(0, limits.yMax - 0.5f, 0);
