@@ -8,8 +8,6 @@ public class Player : Base
 {
 
     bool danger = false;
-    bool advised = false;
-    bool warning = false;
     GameObject healthBar;
     public float lastShot = 0f;
     public bool lowLife = false;
@@ -80,46 +78,31 @@ public class Player : Base
                 danger = true;
             }
 
-            GameObject[] missiles = GameObject.FindGameObjectsWithTag("Missile");
-
-            if (Util.speed < 1.0f && Util.speed > 0.1f && !slowmoAux)
+            if (down[6])
             {
-                Util.PlaySound("s_slowmo_out");
-                Util.music.pitch = 1.0f;
-                slowmoAux = true;
-            }
-
-            if (Util.speed < 1.0f) Util.speed += Util.speed / 10f;
-            else Util.speed = 1.0f;
-            warning = false;
-            speed = 1.0f;
-
-            foreach (GameObject g in missiles)
-            {
-
-                if (g.GetComponent<Base>().owner == name) continue;
-
-                if (Util.Dist(gameObject, g) < 15)
+                if (slowmoAux)
                 {
-                    if (Util.AngleTo(g, gameObject) < 15)
-                    {
-                        Util.speed = 0.1f;
-                        warning = true;
-                        break;
-                    }
+                    Util.PlaySound("s_slowmo_in");
+                    Util.music.pitch = 0.5f;
+                    Util.speed = 0.1f;
+                    slowmoAux = false;
+                }
+            }
+            else
+            {
+                if (!slowmoAux)
+                {
+                    Util.PlaySound("s_slowmo_out");
+                    Util.music.pitch = 1.0f;
+                    slowmoAux = true;
+                }
+                else
+                {
+                    if (Util.speed < 1.0f) Util.speed += Util.speed / 10f;
+                    else if (Util.speed > 1.0f) Util.speed = 1.0f;
                 }
             }
 
-            if (warning && !advised)
-            {
-                Util.PlaySound("s_slowmo_in");
-                Util.PlaySound("s_danger");
-                Util.music.pitch = 0.5f;
-                slowmoAux = false;
-                advised = true;
-            }
-
-            if (!warning) advised = false;
 
             transform.rotation = Util.AngleToQuarternion(rot * speed);
 

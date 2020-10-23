@@ -22,7 +22,7 @@ public class Base : MonoBehaviour
     public bool[] down;
     public string[] acts;
     public KeyCode[] keys;
-    public int KeyNum = 6;
+    public int KeyNum = 7;
     public int pressed = 0;
 
     // color
@@ -46,7 +46,7 @@ public class Base : MonoBehaviour
     public bool evading = false;
     public bool explosive = true;
     public float safeDistance = 2f;
-    public float comboTime = 3f;
+    public float comboTime = 2f;
     public GameObject lifeBar;
     public int shotLevel = 1;
     public int lifeLost = 0;
@@ -68,7 +68,7 @@ public class Base : MonoBehaviour
         keys = new KeyCode[KeyNum];
         origScaleX = transform.localScale.x;
         for (int i = 0; i < KeyNum; i++) down[i] = false;
-        acts = new string[] { "UP", "DOWN", "LEFT", "RIGHT", "FIRE1", "FIRE2" };
+        acts = new string[] { "UP", "DOWN", "LEFT", "RIGHT", "FIRE1", "FIRE2", "FIRE3" };
     }
 
     public virtual void Update()
@@ -187,6 +187,7 @@ public class Base : MonoBehaviour
         keys[3] = KeyCode.D;
         keys[4] = KeyCode.I;
         keys[5] = KeyCode.O;
+        keys[6] = KeyCode.P;
     }
 
     public virtual void CustomControl()

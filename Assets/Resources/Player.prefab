@@ -146,9 +146,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oos: 00000000
-  accel: 15
+  accel: 20
   speed: 1
-  fric: 0.99
+  fric: 0.89
   velX: 0
   velY: 0
   velR: 0
@@ -156,7 +156,7 @@ MonoBehaviour:
   down: 
   acts: []
   keys: 
-  KeyNum: 6
+  KeyNum: 7
   pressed: 0
   alpha: 1
   born: 0
@@ -168,7 +168,7 @@ MonoBehaviour:
   l: {fileID: 0}
   lp: []
   force: 100
-  life: 0
+  life: 1
   maxLife: 100
   dead: 0
   lastKill: 0
