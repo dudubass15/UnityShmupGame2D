@@ -153,12 +153,12 @@ PrefabInstance:
     - target: {fileID: 5469065129832521751, guid: e4b546848e2b262479a34eff01593508,
         type: 3}
       propertyPath: m_fontSize
-      value: 3.5
+      value: 3.56
       objectReference: {fileID: 0}
     - target: {fileID: 5469065129832521751, guid: e4b546848e2b262479a34eff01593508,
         type: 3}
       propertyPath: m_fontSizeBase
-      value: 3.5
+      value: 3.56
       objectReference: {fileID: 0}
     - target: {fileID: 5469065129832521751, guid: e4b546848e2b262479a34eff01593508,
         type: 3}
@@ -169,6 +169,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _SortingOrder
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5469065129832521751, guid: e4b546848e2b262479a34eff01593508,
+        type: 3}
+      propertyPath: m_text
+      value: 'Ships: 99 Level: 99 Missiles: 99 Score: 999999999999 x99 Time: 99:99'
       objectReference: {fileID: 0}
     - target: {fileID: 6589552247638227571, guid: e4b546848e2b262479a34eff01593508,
         type: 3}
@@ -238,7 +243,7 @@ PrefabInstance:
     - target: {fileID: 6937190284825764900, guid: e4b546848e2b262479a34eff01593508,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 6
+      value: 6.43
       objectReference: {fileID: 0}
     - target: {fileID: 6937190284825764900, guid: e4b546848e2b262479a34eff01593508,
         type: 3}

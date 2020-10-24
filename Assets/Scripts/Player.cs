@@ -9,6 +9,7 @@ public class Player : Base
 
     bool danger = false;
     GameObject healthBar;
+    GameObject timeStopBar;
     public float lastShot = 0f;
     public bool lowLife = false;
     public GameObject bulletPoint;
@@ -16,6 +17,8 @@ public class Player : Base
     public float shotInterval = 0.10f;
 
     bool slowmoAux = false;
+    bool slowmoOverload = false;
+
     public override void Start()
     {
         base.Start();
@@ -25,6 +28,7 @@ public class Player : Base
         Util.PlaySound("s_engineon");
 
         healthBar = Util.CreateLifeBar(transform.position);
+        timeStopBar = Util.CreateLifeBar(transform.position, new Color(0f, 80f, 255f));
 
     }
 
@@ -36,6 +40,12 @@ public class Player : Base
         Vector2 pos = transform.position;
         healthBar.GetComponent<LifeBar>().SetSize(life / maxLife);
         healthBar.transform.position = new Vector3(pos.x, pos.y + 0.5f, 0);
+
+        timeStopBar.GetComponent<LifeBar>().SetSize(Util.slowmoPower / Util.slowmoMaxPower);
+        timeStopBar.transform.position = new Vector3(pos.x, pos.y + 0.7f, 0);
+        bool slowmoFull = (Util.slowmoPower == Util.slowmoMaxPower);
+        if (slowmoFull) timeStopBar.SetActive(false);
+        else timeStopBar.SetActive(true);
 
         Util.CreateParticle(gameObject, 2f, exaustPoint);
 
@@ -80,27 +90,28 @@ public class Player : Base
 
             if (down[6])
             {
-                if (slowmoAux)
+                if (!slowmoOverload)
                 {
-                    Util.PlaySound("s_slowmo_in");
-                    Util.music.pitch = 0.5f;
-                    Util.speed = 0.1f;
-                    slowmoAux = false;
+                    if (Util.slowmoPower > 0)
+                    {
+                        Util.slowmoPower -= Util.slowmoDischarge;
+                        if (slowmoAux) SlowMoIn();
+                    }
+                    else
+                    {
+                        slowmoOverload = true;
+                        Util.slowmoPower = 0;
+                        SlowMoOut();
+                    }
                 }
+                else SlowMoReload();
             }
+
             else
             {
-                if (!slowmoAux)
-                {
-                    Util.PlaySound("s_slowmo_out");
-                    Util.music.pitch = 1.0f;
-                    slowmoAux = true;
-                }
-                else
-                {
-                    if (Util.speed < 1.0f) Util.speed += Util.speed / 10f;
-                    else if (Util.speed > 1.0f) Util.speed = 1.0f;
-                }
+                if (!slowmoAux) SlowMoOut();
+                else { SlowMoReload(); }
+                slowmoOverload = true;
             }
 
 
@@ -114,6 +125,30 @@ public class Player : Base
             Destroy(gameObject);
         }
 
+    }
+
+    void SlowMoIn()
+    {
+        Util.PlaySound("s_slowmo_in");
+        Util.music.pitch = 0.5f;
+        Util.speed = 0.1f;
+        slowmoAux = false;
+    }
+
+    void SlowMoOut()
+    {
+        Util.PlaySound("s_slowmo_out");
+        Util.music.pitch = 1.0f;
+        slowmoAux = true;
+    }
+
+    void SlowMoReload()
+    {
+        if (slowmoOverload && Util.slowmoPower == Util.slowmoMaxPower) slowmoOverload = false;
+        if (Util.slowmoPower < Util.slowmoMaxPower) Util.slowmoPower += Util.slowmoRecharge;
+        if (Util.slowmoPower > Util.slowmoMaxPower) Util.slowmoPower = Util.slowmoMaxPower;
+        if (Util.speed < 1.0f) Util.speed += Util.speed / 10f;
+        else if (Util.speed > 1.0f) Util.speed = 1.0f;
     }
 
     void Shot()
@@ -185,17 +220,9 @@ public class Player : Base
         {
             Util.PlaySound("s_powerup");
 
-            if (missileCount < 100)
-            {
-                if (missileCount > 95)
-                {
-                    missileCount = 99;
-                }
-                else
-                {
-                    missileCount += 2;
-                }
-            }
+            if (missileCount < 99)
+
+                missileCount++;
 
             shotLevel++;
 
@@ -208,6 +235,7 @@ public class Player : Base
     void OnDestroy()
     {
         Destroy(healthBar);
+        Destroy(timeStopBar);
     }
 
 }

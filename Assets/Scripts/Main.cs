@@ -19,7 +19,7 @@ public class Main : MonoBehaviour
     float asteroided = 0;
     int starCount = 200;
 
-    string[] alerts = { "CONTROLS: W S A D I O", "ASTEROIDS KEEP SECRETS... DESTROY ALL THEM!" };
+    string[] alerts = { "CONTROLS: W S A D I O P", "ASTEROIDS KEEP SECRETS... DESTROY ALL THEM!" };
     int alertsTotal = 2;
     int alertCount = 0;
     GameObject alert;
@@ -54,7 +54,7 @@ public class Main : MonoBehaviour
         string combo = string.Format("x{0:D2}", bsPlayer.combo);
         string time = string.Format("{0:00}:{1:00}", ts.Minutes, ts.Seconds);
 
-        string infos = "Level: {0:D2} Ships: {1:D2} Missiles: {2:D2} Score: {3:D12} {5} Time: {4}";
+        string infos = "Ships: {1:D2} Level: {0:D2} Missiles: {2:D2} Score: {3:D12} {5} Time: {4}";
         Util.Message(string.Format(infos, Util.level, lifeCount, bsPlayer.missileCount, bsPlayer.score, time, combo));
 
         if (!alert && alertCount < alertsTotal)

@@ -111,7 +111,7 @@ public class Base : MonoBehaviour
             }
             else if (gameObject.tag == "Enemy")
             {
-                if (Util.RandInt(0, 9) > 5)
+                if (Util.RandInt(0, 99) > 95)
                 {
                     Util.LarryWow();
                 }

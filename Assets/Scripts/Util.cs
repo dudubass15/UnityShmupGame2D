@@ -18,6 +18,12 @@ public static class Util
     public static int asteroidCount = 0;
     public static string camName = "Camera";
 
+    // SLOW MOTION
+    public static float slowmoPower = 100f;
+    public static float slowmoRecharge = 1f;
+    public static float slowmoDischarge = 1f;
+    public static float slowmoMaxPower = 100f;
+
     public static AudioSource music;
 
     public static int RandInt(int min, int max)
@@ -364,11 +370,16 @@ public static class Util
         return go;
     }
 
-    public static GameObject CreateLifeBar(Vector2 pos)
+    public static GameObject CreateLifeBar(Vector2 pos, Color color = new Color())
     {
         Quaternion rot = Quaternion.Euler(0, 0, 0);
         GameObject obj = Resources.Load("LifeBar") as GameObject;
         GameObject go = MonoBehaviour.Instantiate(obj, pos, rot);
+
+        if (color == default(Color)) color = new Color(255f, 0f, 0f);
+        var fg = go.transform.Find("bar").transform.Find("fg");
+        fg.GetComponent<SpriteRenderer>().color = color;
+
         go.name = string.Format("{0:D8}_LifeBar", goCounter);
         goCounter += 1;
         return go;
@@ -503,15 +514,15 @@ public static class Util
         return UnityEngine.Random.Range(min, max);
     }
 
-    public static GameObject CreateLifeBar(Vector2 pos, Quaternion rot = default(Quaternion))
-    {
-        GameObject obj = Resources.Load("LifeBar") as GameObject;
-        GameObject go = MonoBehaviour.Instantiate(obj, pos, rot);
-        go.name = string.Format("{0:D8}_LifeBar", goCounter);
-        go.GetComponent<Slider>().value = 1f;
-        goCounter += 1;
-        return go;
-    }
+    // public static GameObject CreateLifeBar(Vector2 pos, Quaternion rot = default(Quaternion))
+    // {
+    //     GameObject obj = Resources.Load("LifeBar") as GameObject;
+    //     GameObject go = MonoBehaviour.Instantiate(obj, pos, rot);
+    //     go.name = string.Format("{0:D8}_LifeBar", goCounter);
+    //     go.GetComponent<Slider>().value = 1f;
+    //     goCounter += 1;
+    //     return go;
+    // }
 
     public static GameObject FindClosestTagged(GameObject me, string tag, bool ignoreTargeted = false)
     {
