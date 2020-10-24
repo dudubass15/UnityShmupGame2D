@@ -10,6 +10,7 @@ public class Base : MonoBehaviour
     public bool[] oos = { false, false, false, false };
 
     // movement
+    public float maxSpeed = 50f;
     public float accel = 20.0f;
     public float speed = 1.0f;
     public float fric = 0.89f;
@@ -46,7 +47,7 @@ public class Base : MonoBehaviour
     public bool evading = false;
     public bool explosive = true;
     public float safeDistance = 2f;
-    public float comboTime = 2f;
+    public float comboTime = 1f;
     public GameObject lifeBar;
     public int shotLevel = 1;
     public int lifeLost = 0;
@@ -55,7 +56,7 @@ public class Base : MonoBehaviour
     public bool targeted = false;
     public string targetTag;
     public int keyDownInit = 3;
-    public int missileCount = 10;
+    public int missileCount = 1;
 
     public float origScaleX;
 
@@ -75,7 +76,8 @@ public class Base : MonoBehaviour
     {
 
         lp = new List<Vector3> { transform.position, transform.position };
-        speed = Util.speed;
+        if (name == "Player") speed = Util.speed == 0.1f ? 0.5f : Util.speed;
+        else speed = Util.speed;
         Move();
 
     }
@@ -91,48 +93,51 @@ public class Base : MonoBehaviour
         l.endWidth = 0.03f;
     }
 
-    public virtual void Die(Collision2D other)
+    public virtual void Die(Collision2D other = null)
     {
 
         if (gameObject.tag != "Projectile")
         {
 
-            Base mb = gameObject.GetComponent<Base>();
-            Base ob = other.gameObject.GetComponent<Base>();
-
-            if (gameObject.name == "Player")
+            if (other != null)
             {
-                Util.Larry(1);
-                if (mb.combo > 1)
+                Base ob = other.gameObject.GetComponent<Base>();
+                Base mb = gameObject.GetComponent<Base>();
+
+                if (gameObject.name == "Player")
                 {
-                    int n = ob.combo < 10 ? 0 : 1;
-                    Util.ComboBreaker(n);
+                    Util.Larry(1);
+                    if (mb.combo > 1)
+                    {
+                        int n = ob.combo < 10 ? 0 : 1;
+                        Util.ComboBreaker(n);
+                    }
                 }
-            }
-            else if (gameObject.tag == "Enemy")
-            {
-                if (Util.RandInt(0, 99) > 95)
+                else if (gameObject.tag == "Enemy")
                 {
-                    Util.LarryWow();
-                }
-            }
-
-            if (ob.owner != owner)
-            {
-
-                GameObject go = GameObject.Find(ob.owner);
-
-                if (go)
-                {
-                    Base bs = go.GetComponent<Base>() as Base;
-
-                    if (Time.time - bs.lastKill < comboTime)
-                    { bs.combo++; bs.Combo(); }
-
-                    bs.lastKill = Time.time;
-                    bs.kills += 1;
+                    if (Util.RandInt(0, 99) > 95)
+                    {
+                        Util.LarryWow();
+                    }
                 }
 
+                if (ob.owner != owner)
+                {
+
+                    GameObject go = GameObject.Find(ob.owner);
+
+                    if (go)
+                    {
+                        Base bs = go.GetComponent<Base>() as Base;
+
+                        if (Time.time - bs.lastKill < comboTime)
+                        { bs.combo++; bs.Combo(); }
+
+                        bs.lastKill = Time.time;
+                        bs.kills += 1;
+                    }
+
+                }
             }
 
         }
@@ -153,15 +158,10 @@ public class Base : MonoBehaviour
     public virtual void Move()
     {
 
-        velY *= fric;
-        velX *= fric;
-
-        oos = Util.OutOfScreen(gameObject);
-
-        if (down[0]) velY += accel * Time.deltaTime;
-        if (down[1]) velY -= accel * Time.deltaTime;
-        if (down[2]) velX -= accel * Time.deltaTime;
-        if (down[3]) velX += accel * Time.deltaTime;
+        if (down[0]) velY += accel * Time.deltaTime * speed;
+        if (down[1]) velY -= accel * Time.deltaTime * speed;
+        if (down[2]) velX -= accel * Time.deltaTime * speed;
+        if (down[3]) velX += accel * Time.deltaTime * speed;
 
         if (Time.time - lastKill > comboTime) combo = 1;
 
@@ -169,6 +169,11 @@ public class Base : MonoBehaviour
         float my = velY * Time.deltaTime * speed;
 
         transform.Translate(new Vector2(mx, my));
+
+        oos = Util.OutOfScreen(gameObject);
+
+        velX *= fric;
+        velY *= fric;
 
     }
     public virtual void GameControl()

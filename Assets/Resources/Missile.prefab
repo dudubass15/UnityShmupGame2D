@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1448875769729352260}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.442, y: -0.007, z: -275.83875}
+  m_LocalPosition: {x: -0.257, y: -0.004, z: -275.83875}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8523328085676451426}
@@ -175,9 +175,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oos: 00000000
+  maxSpeed: 50
   accel: 20
-  speed: 2
-  fric: 0.96
+  speed: 1
+  fric: 0.89
   velX: 0
   velY: 0
   velR: 0
@@ -185,7 +186,7 @@ MonoBehaviour:
   down: 
   acts: []
   keys: 
-  KeyNum: 6
+  KeyNum: 7
   pressed: 0
   alpha: 1
   born: 0
@@ -197,7 +198,7 @@ MonoBehaviour:
   l: {fileID: 0}
   lp: []
   force: 100
-  life: 100
+  life: 1
   maxLife: 100
   dead: 0
   lastKill: 0
@@ -216,5 +217,6 @@ MonoBehaviour:
   keyDownInit: 3
   missileCount: 10
   origScaleX: 0
+  lifeTime: 4
   exaustPoint: {fileID: 1448875769729352260}
   ignoreTagged: 0

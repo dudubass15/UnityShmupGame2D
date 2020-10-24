@@ -5,6 +5,7 @@ using UnityEngine;
 public class Missile : Base
 {
 
+    public float lifeTime = 4f;
     public GameObject exaustPoint;
     public bool ignoreTagged = false;
     public override void Start()
@@ -31,7 +32,16 @@ public class Missile : Base
         base.Update();
         DestroyOnOut();
 
+        lifeTime += speed < 1f ? 0.01f : 0f;
+
+        float scale = transform.localScale.x;
+
+        if (Time.time - born > lifeTime) base.Die();
+
         Util.CreateParticle(gameObject, 1f, exaustPoint);
+
+        if (velX * scale > maxSpeed) velX = maxSpeed * scale;
+        if (velY * scale > maxSpeed) velY = maxSpeed * scale;
 
         if (target) Util.RotateTo(gameObject, target, velR * speed);
 

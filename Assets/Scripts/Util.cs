@@ -88,7 +88,7 @@ public static class Util
             case "music": loop = true; break;
             case "laser": volume = 0.05f; break;
             case "s_missile": volume = 0.5f; break;
-            case "top-gear-1": volume = 0.5f; loop = true; break;
+            case "top-gear-1": volume = 0.5f; break;
             case "s_engineon": volume = 0.3f; pbSpeed = 3f; break;
         }
 
@@ -442,7 +442,7 @@ public static class Util
     {
         GameObject obj = Resources.Load("Combo") as GameObject;
         Rect limits = Util.Limits();
-        Vector2 pos = new Vector2(0, limits.yMin + 0.3f);
+        Vector2 pos = new Vector2(0, limits.yMin + 0.2f);
         GameObject go = MonoBehaviour.Instantiate(obj, pos, rot);
         go.name = string.Format("{0:D8}_Combo", goCounter);
         go.GetComponent<TextMesh>().text = text;

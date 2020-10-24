@@ -23,6 +23,7 @@ public class Main : MonoBehaviour
     int alertsTotal = 2;
     int alertCount = 0;
     GameObject alert;
+    public static TimeSpan ts;
 
     void Start()
     {
@@ -47,10 +48,14 @@ public class Main : MonoBehaviour
     {
         CreatePlayer();
 
+        if (!Util.music)
+
+            Util.music = Util.PlaySound("top-gear-2", true);
+
         if (Time.time - started > startDelay) CreateEnemies();
         if (Time.time - started > startDelay) CreateAsteroid();
 
-        var ts = TimeSpan.FromSeconds(Time.time - started);
+        ts = TimeSpan.FromSeconds(Time.time - started);
         string combo = string.Format("x{0:D2}", bsPlayer.combo);
         string time = string.Format("{0:00}:{1:00}", ts.Minutes, ts.Seconds);
 
@@ -123,7 +128,6 @@ public class Main : MonoBehaviour
                 float r2 = Util.Rand(rect.yMin, rect.yMax);
                 Vector2 pos = new Vector2(rect.xMax + r1, r2);
                 enemies[i] = Util.CreateEnemy1(pos, Quaternion.identity);
-                enemies[i].GetComponent<Base>().missileCount = 1;
                 string s = string.Format("Spaceship{0}", UnityEngine.Random.Range(1, 4));
                 enemies[i].GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(s) as Sprite;
 
@@ -145,11 +149,10 @@ public class Main : MonoBehaviour
                 Util.level++;
 
                 if (bsPlayer.life < 100) bsPlayer.life += ((bsPlayer.maxLife - bsPlayer.life) * 10 / 100);
+                if (bsPlayer.lifeLost == 0) Util.Victory(); else Util.Larry(21);
                 Util.CreateLevelUp(string.Format("LEVEL {0:D3}", Util.level));
-                if (bsPlayer.lifeLost == 0) Util.Victory();
                 Util.PlaySound("s_levelup");
                 bsPlayer.lifeLost = 0;
-                Util.Larry(21);
 
             }
 

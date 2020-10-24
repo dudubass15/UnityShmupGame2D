@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
@@ -19,12 +18,17 @@ public class Player : Base
     bool slowmoAux = false;
     bool slowmoOverload = false;
 
+    float missilesLast;
+    int missiles = 0;
+
     public override void Start()
     {
         base.Start();
         fric = 0.92f;
         accel = 45.0f;
         SetupControl();
+        missileCount = 10;
+        missilesLast = Time.time;
         Util.PlaySound("s_engineon");
 
         healthBar = Util.CreateLifeBar(transform.position);
@@ -36,6 +40,12 @@ public class Player : Base
     {
 
         base.Update();
+
+        if (Time.time - missilesLast > 0.5f)
+        {
+            if (missiles > 5) Util.Larry(3); // hot fury
+            missiles = 0;
+        }
 
         Vector2 pos = transform.position;
         healthBar.GetComponent<LifeBar>().SetSize(life / maxLife);
@@ -191,6 +201,8 @@ public class Player : Base
             go.GetComponent<Base>().targetTag = "Enemy";
             Util.IgnoreCollision(gameObject, go);
             GetComponent<Base>().missileCount--;
+            missilesLast = Time.time;
+            missiles += 1;
 
         }
         else
@@ -216,9 +228,12 @@ public class Player : Base
     public override void OnCollisionEnter2D(Collision2D other)
     {
 
+        if (other.gameObject.tag == "Missile" && Random.Range(0, 9) > 7) Util.Larry(15); // should avoid mines
+
         if (other.gameObject.tag == "PowerUp")
         {
             Util.PlaySound("s_powerup");
+            Util.Larry(9); // powers up
 
             if (missileCount < 99)
 

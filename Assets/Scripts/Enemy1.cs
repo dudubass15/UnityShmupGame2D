@@ -27,6 +27,7 @@ public class Enemy1 : Base
 
     }
 
+    bool addMissile = false;
     public override void Update()
     {
         base.Update();
@@ -44,6 +45,16 @@ public class Enemy1 : Base
         {
 
             rot = velY / 20;
+
+            if (Mathf.Round(Time.time - born) % 5 == 0)
+            {
+                if (!addMissile)
+                {
+                    addMissile = true;
+                    missileCount++;
+                }
+            }
+            else if (addMissile) addMissile = false;
 
             Rect limits = Util.Limits();
 
@@ -70,22 +81,14 @@ public class Enemy1 : Base
             GameObject player = GameObject.Find("Player") as GameObject;
             down[4] = (player && Util.AngleTo(gameObject, player) < 1f);
 
-            if (down[4])
+            if (Time.time - lastShot > shotInterval / speed)
             {
-                if (Time.time - lastShot > shotInterval / speed)
-                {
-                    lastShot = Time.time;
-                    Shot();
-                }
+                if (down[5]) { Missile(); moveTime = 0; }
+                if (down[4]) { Shot(); }
+                lastShot = Time.time;
             }
 
-            if (down[5])
-            {
-                moveTime = 0;
-                Missile();
-            }
-
-            transform.rotation = Util.AngleToQuarternion(rot * -1);
+            transform.rotation = Util.AngleToQuarternion(rot * speed * -1);
 
         }
 
@@ -106,7 +109,8 @@ public class Enemy1 : Base
         if (GetComponent<Base>().missileCount > 0)
         {
 
-            GameObject go = Util.CreateMissile(ShotPosition(), transform.rotation);
+            GameObject go = Util.CreateMissile(ShotPosition(), transform.rotation, Util.level / 10f);
+            go.GetComponent<Base>().maxSpeed = Util.level < 10 ? 10f : 20f;
             go.GetComponent<Base>().owner = gameObject.name;
             go.transform.localScale = new Vector3(-1, 1, 1);
             go.GetComponent<Base>().targetTag = "Player";

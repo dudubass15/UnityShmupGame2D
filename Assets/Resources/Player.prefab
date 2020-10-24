@@ -146,6 +146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oos: 00000000
+  maxSpeed: 50
   accel: 20
   speed: 1
   fric: 0.89
@@ -176,7 +177,7 @@ MonoBehaviour:
   evading: 0
   explosive: 1
   safeDistance: 2
-  comboTime: 2
+  comboTime: 1
   lifeBar: {fileID: 0}
   shotLevel: 1
   lifeLost: 0

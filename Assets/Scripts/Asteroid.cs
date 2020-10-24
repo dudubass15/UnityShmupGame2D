@@ -51,12 +51,12 @@ public class Asteroid : Base
                     for (int i = 0; i < n; i++)
                     {
 
-                        float s = (scale.x / Random.Range(2, 5));
+                        float s = (scale.x / Random.Range(2, 4));
                         GameObject go = Util.CreateAsteroid(transform.position, s);
 
                         go.GetComponent<Base>().velX = Util.Rand(-1f, 1f);
                         go.GetComponent<Base>().velY = Util.Rand(-1f, 1f);
-                        go.GetComponent<Base>().force = (int)(force * s);
+                        go.GetComponent<Base>().force = 1;
                         go.GetComponent<Base>().life = 1;
 
                     }
