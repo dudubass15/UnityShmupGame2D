@@ -132,6 +132,7 @@ public class Player : Base
                         Util.slowmoPower = 0;
                         SlowMoOut();
                     }
+                    HoloTrail();
                 }
                 else SlowMoReload();
             }
