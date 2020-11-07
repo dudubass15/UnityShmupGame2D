@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 5698589898168302020}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.02, y: -0.61535156, z: -362.99414}
-  m_LocalScale: {x: 0.5018117, y: 0.49174708, z: 1}
+  m_LocalScale: {x: 0.2559953, y: 0.2508609, z: 0.51014215}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -47,16 +47,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oos: 00000000
+  maxSpeed: 50
   accel: 20
   speed: 1
   fric: 0.96
   velX: 0
   velY: 0
+  velR: 0
   rot: 0
   down: 
   acts: []
   keys: 
-  KeyNum: 6
+  keyNum: 8
   pressed: 0
   alpha: 1
   born: 0
@@ -126,7 +128,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 9
-  m_Sprite: {fileID: 21300000, guid: 34f1b09b59daa054289e58112bb4d2a1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 42470b466780117448f7af6420d98066, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -171,16 +173,16 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.02263762, y: 0.0009319484}
+  m_Offset: {x: -0.069621384, y: 0.026608646}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.28, y: 1.28}
+    oldSize: {x: 2.56, y: 2.56}
     newSize: {x: 0.16, y: 0.16}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.4868637, y: 0.9129991}
+  m_Size: {x: 1.8791331, y: 2.1968226}
   m_EdgeRadius: 0
