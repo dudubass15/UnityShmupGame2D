@@ -6,6 +6,7 @@ public class Missile : Base
 {
 
     public float lifeTime = 4f;
+    public GameObject targetGO;
     public GameObject exaustPoint;
     public bool ignoreTagged = false;
     public override void Start()
@@ -54,7 +55,8 @@ public class Missile : Base
             {
                 Util.PlaySound("s_missilebeep");
                 target.GetComponent<Base>().targeted = true;
-                Util.CreateTarget(target.transform.position);
+                targetGO = Util.CreateTarget(target.transform.position);
+                targetGO.GetComponent<Target>().targetGO = target;
             }
 
         }
@@ -65,6 +67,7 @@ public class Missile : Base
 
     void OnDestroy()
     {
+        if (targetGO) Destroy(targetGO);
         if (target) target.GetComponent<Base>().targeted = false;
     }
 

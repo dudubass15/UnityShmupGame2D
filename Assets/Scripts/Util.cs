@@ -209,6 +209,15 @@ public static class Util
 
     }
 
+    public static void SpriteFadeIn(GameObject go, float alpha)
+    {
+
+        Color color = go.GetComponent<SpriteRenderer>().color;
+        color.a += alpha;
+        if (color.a <= 1f)
+            go.GetComponent<SpriteRenderer>().color = color;
+    }
+
     public static bool TextAlpha(GameObject go, float alpha)
     {
 
@@ -601,6 +610,34 @@ public static class Util
     public static float AngleTo(GameObject a, GameObject b)
     {
         return Math.Abs(Vector3.Angle(a.transform.right, a.transform.position - b.transform.position));
+    }
+
+    public static void SetAlpha(GameObject go, float alpha)
+    {
+        var sr = go.GetComponent<SpriteRenderer>();
+        var color = sr.color;
+        color.a = alpha;
+        sr.color = color;
+    }
+
+    public static void SetScale(GameObject go, float size)
+    {
+        go.transform.localScale = new Vector3(size, size, 1);
+    }
+
+    public static void ScaleDown(GameObject go, float rate = 0.1f)
+    {
+        var scale = go.transform.localScale;
+
+        if (scale.x >= 1f)
+        {
+            rate = 1f - rate;
+            var sx = scale.x * rate;
+            var sy = scale.y * rate;
+            var x = sx < 1f ? 1f : sx;
+            var y = sy < 1f ? 1f : sy;
+            go.transform.localScale = new Vector3(x, y, 1f);
+        }
     }
 
 }

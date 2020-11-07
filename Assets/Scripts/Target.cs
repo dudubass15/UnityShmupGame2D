@@ -4,17 +4,19 @@ using UnityEngine;
 
 public class Target : Base
 {
-    // Start is called before the first frame update
+    public GameObject targetGO;
     public override void Start()
     {
         base.Start();
+        Util.SetScale(gameObject, 10);
+        Util.SetAlpha(gameObject, 0f);
     }
 
-    // Update is called once per frame
     public override void Update()
     {
         base.Update();
-        bool zero = Util.SpriteAlpha(gameObject, 0.008f);
-        if (zero) Destroy(gameObject);
+        Util.ScaleDown(gameObject, 0.1f);
+        Util.SpriteFadeIn(gameObject, 0.1f);
+        if (targetGO) transform.position = targetGO.transform.position;
     }
 }
