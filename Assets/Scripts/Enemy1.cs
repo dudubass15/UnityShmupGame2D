@@ -67,7 +67,7 @@ public class Enemy1 : Base
                 for (int i = 0; i < down.Length; i++) down[i] = false;
                 moveTime = UnityEngine.Random.Range(0.3f, 0.7f);
 
-                if (pos.x < limits.xMin / 2f) btnNum = 3;
+                if (pos.x < limits.xMin + 2f) btnNum = 3;
                 if (pos.x > limits.xMax - 2f) btnNum = 2;
                 if (pos.y > limits.yMax - 2f) btnNum = 1;
                 if (pos.y < limits.yMin + 2f) btnNum = 0;
@@ -78,8 +78,12 @@ public class Enemy1 : Base
 
             }
 
-            GameObject player = GameObject.Find("Player") as GameObject;
-            down[4] = (player && Util.AngleTo(gameObject, player) < 1f);
+            GameObject[] players = GameObject.FindGameObjectsWithTag(isHacked ? "Enemy" : "Player");
+            foreach (var player in players)
+            {
+                if (player.name == name) continue;
+                down[4] = (Util.AngleTo(gameObject, player) < 1f);
+            }
 
             if (Time.time - lastShot > shotInterval / speed)
             {
@@ -88,7 +92,7 @@ public class Enemy1 : Base
                 lastShot = Time.time;
             }
 
-            transform.rotation = Util.AngleToQuarternion(rot * speed * -1);
+            transform.rotation = Util.AngleToQuarternion(rot * speed * transform.localScale.x);
 
         }
 
@@ -98,6 +102,7 @@ public class Enemy1 : Base
     {
 
         GameObject go = Util.CreateShot2(ShotPosition(), transform.rotation);
+        if (isHacked) go.GetComponent<Base>().velX *= -1.0f;
         go.GetComponent<Base>().owner = gameObject.name;
         Util.PlaySound("laser", false, 0.05f);
         Util.IgnoreCollision(gameObject, go);
@@ -110,11 +115,11 @@ public class Enemy1 : Base
         {
 
             GameObject go = Util.CreateMissile(ShotPosition(), transform.rotation, Util.level / 10f);
+            go.transform.localScale = new Vector3(transform.localScale.x, 1, 1);
+            go.GetComponent<Base>().targetTag = isHacked ? "Enemy" : "Player";
             go.GetComponent<Base>().maxSpeed = Util.level < 10 ? 10f : 20f;
+            go.GetComponent<Base>().keyDownInit = isHacked ? 3 : 2;
             go.GetComponent<Base>().owner = gameObject.name;
-            go.transform.localScale = new Vector3(-1, 1, 1);
-            go.GetComponent<Base>().targetTag = "Player";
-            go.GetComponent<Base>().keyDownInit = 2;
             Util.IgnoreCollision(gameObject, go);
             GetComponent<Base>().missileCount--;
 

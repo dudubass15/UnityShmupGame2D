@@ -60,6 +60,9 @@ public class Base : MonoBehaviour
 
     public float origScaleX;
 
+    // enemies
+    public bool isHacked = false;
+
     public virtual void Start()
     {
         CreateLine();

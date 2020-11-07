@@ -535,6 +535,7 @@ public static class Util
         {
             if (go.name == me.name) continue;
             if (go.GetComponent<Base>().owner == me.name) continue;
+            if (me.GetComponent<Base>().owner == go.name) continue;
             if (ignoreTargeted && go.GetComponent<Base>().targeted) continue;
             Vector3 diff = go.transform.position - position;
             float curDistance = diff.sqrMagnitude;

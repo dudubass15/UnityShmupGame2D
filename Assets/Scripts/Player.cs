@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
@@ -150,6 +151,7 @@ public class Player : Base
 
             hacking = false;
             l.enabled = false;
+            GameObject hShip = null;
 
             if (ships.Length > 0)
             {
@@ -158,6 +160,7 @@ public class Player : Base
                     float dist = Util.Dist(gameObject, s);
                     if (dist < 10)
                     {
+                        hShip = s;
                         hacking = true;
                         l.enabled = true;
                         lp[0] = transform.position;
@@ -179,9 +182,20 @@ public class Player : Base
                         }
                         else
                         {
-                            Util.CreateAlert("HACKED!");
-                            hackingAux = hackingTime;
-                            hacked = true;
+                            if (!hShip.GetComponent<Base>().isHacked)
+                            {
+
+                                var l = Util.Limits();
+                                var s = hShip.transform.localScale;
+                                hShip.transform.localScale = new Vector3(s.x * -1f, s.y, s.z);
+                                hShip.transform.Translate(new Vector3(l.xMin - 2f, 0, 0));
+                                hShip.GetComponent<Base>().isHacked = true;
+                                Util.CreateAlert("HACKED!");
+                                hackingAux = hackingTime;
+                                hShip.tag = "Player";
+                                hacked = true;
+
+                            }
                         }
                     }
                 }
@@ -296,7 +310,7 @@ public class Player : Base
     public override void OnCollisionEnter2D(Collision2D other)
     {
 
-        if (other.gameObject.tag == "Missile" && Random.Range(0, 9) > 7) Util.Larry(15); // should avoid mines
+        if (other.gameObject.tag == "Missile" && UnityEngine.Random.Range(0, 9) > 7) Util.Larry(15); // should avoid mines
 
         if (other.gameObject.tag == "PowerUp")
         {
@@ -318,6 +332,7 @@ public class Player : Base
     void OnDestroy()
     {
         Destroy(healthBar);
+        Destroy(hackingBar);
         Destroy(timeStopBar);
     }
 
