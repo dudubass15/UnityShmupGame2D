@@ -364,9 +364,6 @@ public class Base : MonoBehaviour
             var sp = holo.AddComponent<SpriteRenderer>();
             holo.AddComponent<Fade>();
             holoLast = Time.time;
-            // var color = sp.color;
-            // color.a = 0.9f;
-            // sp.color = color;
             sp.sprite = sprite;
             Destroy(go, 2);
             holos++;
