@@ -8,6 +8,7 @@ public class Player : Base
 
     bool danger = false;
     GameObject healthBar;
+    GameObject hackingBar;
     GameObject timeStopBar;
     public float lastShot = 0f;
     public bool lowLife = false;
@@ -21,6 +22,13 @@ public class Player : Base
     float missilesLast;
     int missiles = 0;
 
+    // SHIP HACKING
+    bool hacked = false;
+    bool hacking = false;
+    float hackingAux = 0f;
+    float hackingTime = 10f;
+    float hackingSpeed = 0.1f;
+
     public override void Start()
     {
         base.Start();
@@ -32,6 +40,7 @@ public class Player : Base
         Util.PlaySound("s_engineon");
 
         healthBar = Util.CreateLifeBar(transform.position);
+        hackingBar = Util.CreateLifeBar(transform.position, new Color(80f, 0f, 255f));
         timeStopBar = Util.CreateLifeBar(transform.position, new Color(0f, 80f, 255f));
 
     }
@@ -47,15 +56,23 @@ public class Player : Base
             missiles = 0;
         }
 
+        // HEALTH BAR
         Vector2 pos = transform.position;
         healthBar.GetComponent<LifeBar>().SetSize(life / maxLife);
         healthBar.transform.position = new Vector3(pos.x, pos.y + 0.5f, 0);
 
+        // FREEZE TIME BAR
         timeStopBar.GetComponent<LifeBar>().SetSize(Util.slowmoPower / Util.slowmoMaxPower);
         timeStopBar.transform.position = new Vector3(pos.x, pos.y + 0.7f, 0);
         bool slowmoFull = (Util.slowmoPower == Util.slowmoMaxPower);
         if (slowmoFull) timeStopBar.SetActive(false);
         else timeStopBar.SetActive(true);
+
+        // HACKING BAR
+        hackingBar.GetComponent<LifeBar>().SetSize(hackingAux / hackingTime);
+        hackingBar.transform.position = new Vector3(pos.x, pos.y + 0.9f, 0);
+        if (hacking) hackingBar.SetActive(true);
+        else hackingBar.SetActive(false);
 
         Util.CreateParticle(gameObject, 2f, exaustPoint);
 
@@ -98,6 +115,8 @@ public class Player : Base
                 danger = true;
             }
 
+            // Time Freeze
+
             if (down[6])
             {
                 if (!slowmoOverload)
@@ -124,6 +143,54 @@ public class Player : Base
                 slowmoOverload = true;
             }
 
+            // TODO: Ship Hacking
+
+            GameObject[] ships = GameObject.FindGameObjectsWithTag("Enemy");
+
+            hacking = false;
+            l.enabled = false;
+
+            if (ships.Length > 0)
+            {
+                foreach (GameObject s in ships)
+                {
+                    float dist = Util.Dist(gameObject, s);
+                    if (dist < 10)
+                    {
+                        hacking = true;
+                        l.enabled = true;
+                        lp[0] = transform.position;
+                        lp[1] = s.transform.position;
+                        l.SetPositions(lp.ToArray());
+                    }
+                }
+            }
+
+            if (!hacked)
+            {
+                if (hacking)
+                {
+                    if (!hacked)
+                    {
+                        if (hackingAux < hackingTime)
+                        {
+                            hackingAux += hackingSpeed;
+                        }
+                        else
+                        {
+                            Util.CreateAlert("HACKED!");
+                            hackingAux = hackingTime;
+                            hacked = true;
+                        }
+                    }
+                }
+            }
+
+            if (!hacking)
+            {
+                hackingAux = 0f;
+                hacked = false;
+            }
 
             transform.rotation = Util.AngleToQuarternion(rot * speed);
 

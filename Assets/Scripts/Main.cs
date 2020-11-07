@@ -24,6 +24,7 @@ public class Main : MonoBehaviour
     int alertCount = 0;
     GameObject alert;
     public static TimeSpan ts;
+    public static bool paused = false;
 
     void Start()
     {

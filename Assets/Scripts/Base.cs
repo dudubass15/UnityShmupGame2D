@@ -23,7 +23,7 @@ public class Base : MonoBehaviour
     public bool[] down;
     public string[] acts;
     public KeyCode[] keys;
-    public int KeyNum = 7;
+    public int keyNum = 8;
     public int pressed = 0;
 
     // color
@@ -65,15 +65,17 @@ public class Base : MonoBehaviour
         CreateLine();
         life = maxLife;
         born = Time.time;
-        down = new bool[KeyNum];
-        keys = new KeyCode[KeyNum];
+        down = new bool[keyNum];
+        keys = new KeyCode[keyNum];
         origScaleX = transform.localScale.x;
-        for (int i = 0; i < KeyNum; i++) down[i] = false;
-        acts = new string[] { "UP", "DOWN", "LEFT", "RIGHT", "FIRE1", "FIRE2", "FIRE3" };
+        for (int i = 0; i < keyNum; i++) down[i] = false;
+        acts = new string[] { "UP", "DOWN", "LEFT", "RIGHT", "FIRE1", "FIRE2", "FIRE3", "FIRE4", "FIRE5" };
     }
 
     public virtual void Update()
     {
+
+        if (Main.paused) return;
 
         lp = new List<Vector3> { transform.position, transform.position };
         if (name == "Player") speed = Util.speed == 0.1f ? 0.5f : Util.speed;
@@ -178,10 +180,26 @@ public class Base : MonoBehaviour
     }
     public virtual void GameControl()
     {
-        for (int i = 0; i < KeyNum; i++)
-        {
-            if (Input.GetKey(keys[i])) down[i] = true; else down[i] = false;
-        }
+        for (int i = 0; i < keyNum; i++)
+
+            down[i] = Input.GetKey(keys[i]);
+
+        XboxController();
+    }
+
+    void XboxController()
+    {
+        float v = Input.GetAxis("Vertical");
+        float h = Input.GetAxis("Horizontal");
+        if (v > 0.9f) down[1] = true; else down[1] = down[1];
+        if (h > 0.9f) down[3] = true; else down[3] = down[3];
+        if (v < -0.9f) down[0] = true; else down[0] = down[0];
+        if (h < -0.9f) down[2] = true; else down[2] = down[2];
+        if (Input.GetKey(KeyCode.Joystick1Button2)) down[4] = true; else down[4] = down[4];
+        if (Input.GetKey(KeyCode.Joystick1Button1)) down[5] = true; else down[5] = down[5];
+        if (Input.GetKey(KeyCode.Joystick1Button4)) down[6] = true; else down[6] = down[6];
+        if (Input.GetKey(KeyCode.Joystick1Button3)) down[7] = true; else down[7] = down[7];
+        if (Input.GetKeyDown(KeyCode.Joystick1Button7)) { if (Main.paused) Util.speed = 0; else Util.speed = 1; Main.paused = !Main.paused; }
     }
 
     public virtual void SetupControl()
@@ -193,12 +211,13 @@ public class Base : MonoBehaviour
         keys[4] = KeyCode.I;
         keys[5] = KeyCode.O;
         keys[6] = KeyCode.P;
+        keys[7] = KeyCode.U;
     }
 
     public virtual void CustomControl()
     {
 
-        if (pressed < KeyNum)
+        if (pressed < keyNum)
         {
 
             Util.Message(string.Format("Press button to {0}...", acts[pressed]));
@@ -310,8 +329,8 @@ public class Base : MonoBehaviour
 
                 evad = true;
 
-                lp[0] = transform.position;
-                lp[1] = closest.transform.position;
+                // lp[0] = transform.position;
+                // lp[1] = closest.transform.position;
 
                 float dx = transform.position.x - closest.transform.position.x;
                 float dy = transform.position.y - closest.transform.position.y;

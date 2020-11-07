@@ -187,7 +187,7 @@ MonoBehaviour:
   down: 
   acts: []
   keys: 
-  KeyNum: 6
+  KeyNum: 7
   pressed: 0
   alpha: 1
   born: 0
