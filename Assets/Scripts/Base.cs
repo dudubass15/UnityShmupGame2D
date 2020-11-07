@@ -358,15 +358,17 @@ public class Base : MonoBehaviour
     float holoLast = 0f;
     int holos = 0;
 
-    public void HoloTrail()
+    public void HoloTrail(float rate = 0.01f)
     {
         if (Time.time - holoLast > holoInterval)
         {
             var go = new GameObject(string.Format("_{0}", holos));
             var holo = Instantiate(go, transform.position, transform.rotation);
             var sprite = GetComponent<SpriteRenderer>().sprite;
+            holo.transform.localScale = transform.localScale;
             var sp = holo.AddComponent<SpriteRenderer>();
-            holo.AddComponent<Fade>();
+            var fade = holo.AddComponent<Fade>();
+            fade.fadeRate = rate;
             holoLast = Time.time;
             sp.sprite = sprite;
             Destroy(go, 2);

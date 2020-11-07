@@ -15,8 +15,10 @@ public class Target : Base
     public override void Update()
     {
         base.Update();
-        Util.ScaleDown(gameObject, 0.1f);
-        Util.SpriteFadeIn(gameObject, 0.1f);
+        Util.SpriteFadeIn(gameObject, 0.05f);
+        Util.ScaleDown(gameObject, 0.1f, 0.5f);
+        transform.Rotate(Vector3.forward * transform.localScale.x);
         if (targetGO) transform.position = targetGO.transform.position;
+        else Destroy(gameObject);
     }
 }

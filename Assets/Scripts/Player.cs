@@ -181,7 +181,7 @@ public class Player : Base
                     {
                         if (hackingAux < hackingTime)
                         {
-                            hackingAux += hackingSpeed;
+                            hackingAux += hackingSpeed * Util.speed;
                             if (!hackingSound) hackingSound = Util.PlaySound("glitch", volume: 0.5f);
                         }
                         else
@@ -191,12 +191,13 @@ public class Player : Base
 
                                 var l = Util.Limits();
                                 var s = hShip.transform.localScale;
+                                hShip.GetComponent<Base>().HoloTrail(0.02f);
 
                                 hShip.transform.localScale = new Vector3(s.x * -1f, s.y, s.z);
-                                hShip.transform.Translate(new Vector3(l.xMin - 2f, 0, 0));
+                                hShip.transform.position = new Vector3(l.xMin * 1.2f, 0, 0);
                                 hShip.GetComponent<Base>().isHacked = true;
-                                Util.PlaySound("hacked", volume: 5f);
-                                Util.CreateAlert("HACKED!");
+                                Util.PlaySound("hacked", volume: 8f);
+                                Util.CreateAlert("Enemy Hacked!");
                                 hackingAux = hackingTime;
                                 hShip.tag = "Player";
                                 hacked = true;

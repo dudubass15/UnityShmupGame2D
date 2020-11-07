@@ -21,6 +21,17 @@ public class Fade : MonoBehaviour
             sp.color = color;
         else
             Destroy(gameObject);
+        ToBlack();
+    }
+
+    void ToBlack()
+    {
+        var wRate = 1.7f;
+        var color = sp.color;
+        color.r -= fadeRate * wRate;
+        color.g -= fadeRate * wRate;
+        color.b -= fadeRate * wRate;
+        sp.color = color;
     }
 
 }

@@ -625,7 +625,7 @@ public static class Util
         go.transform.localScale = new Vector3(size, size, 1);
     }
 
-    public static void ScaleDown(GameObject go, float rate = 0.1f)
+    public static void ScaleDown(GameObject go, float rate = 0.1f, float min = 1f)
     {
         var scale = go.transform.localScale;
 
@@ -634,9 +634,9 @@ public static class Util
             rate = 1f - rate;
             var sx = scale.x * rate;
             var sy = scale.y * rate;
-            var x = sx < 1f ? 1f : sx;
-            var y = sy < 1f ? 1f : sy;
-            go.transform.localScale = new Vector3(x, y, 1f);
+            sx = sx < min ? min : sx;
+            sy = sy < min ? min : sy;
+            go.transform.localScale = new Vector3(sx, sy, 1f);
         }
     }
 

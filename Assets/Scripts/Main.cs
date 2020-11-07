@@ -141,7 +141,7 @@ public class Main : MonoBehaviour
             int n = 0;
             for (int i = 0; i < enemies.Length; i++)
             {
-                if (!enemies[i]) n++;
+                if (!enemies[i] || enemies[i].GetComponent<Base>().isHacked) n++;
             }
 
             if (n == numEnemies)
