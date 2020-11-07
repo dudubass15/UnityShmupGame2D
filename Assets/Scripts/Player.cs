@@ -195,7 +195,7 @@ public class Player : Base
                                 hShip.transform.localScale = new Vector3(s.x * -1f, s.y, s.z);
                                 hShip.transform.Translate(new Vector3(l.xMin - 2f, 0, 0));
                                 hShip.GetComponent<Base>().isHacked = true;
-                                Util.PlaySound("okay", volume: 2f);
+                                Util.PlaySound("hacked", volume: 5f);
                                 Util.CreateAlert("HACKED!");
                                 hackingAux = hackingTime;
                                 hShip.tag = "Player";
