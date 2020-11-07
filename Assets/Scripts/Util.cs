@@ -514,16 +514,6 @@ public static class Util
         return UnityEngine.Random.Range(min, max);
     }
 
-    // public static GameObject CreateLifeBar(Vector2 pos, Quaternion rot = default(Quaternion))
-    // {
-    //     GameObject obj = Resources.Load("LifeBar") as GameObject;
-    //     GameObject go = MonoBehaviour.Instantiate(obj, pos, rot);
-    //     go.name = string.Format("{0:D8}_LifeBar", goCounter);
-    //     go.GetComponent<Slider>().value = 1f;
-    //     goCounter += 1;
-    //     return go;
-    // }
-
     public static GameObject FindClosestTagged(GameObject me, string tag, bool ignoreTargeted = false)
     {
         GameObject[] gos;
