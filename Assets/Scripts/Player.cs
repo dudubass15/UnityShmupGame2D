@@ -46,6 +46,8 @@ public class Player : Base
 
     }
 
+    string hackingName;
+    AudioSource hackingSound;
     public override void Update()
     {
 
@@ -166,6 +168,7 @@ public class Player : Base
                         lp[0] = transform.position;
                         lp[1] = s.transform.position;
                         l.SetPositions(lp.ToArray());
+                        if (hackingName != s.name) { hackingName = s.name; hackingAux = 0f; }
                     }
                 }
             }
@@ -179,6 +182,7 @@ public class Player : Base
                         if (hackingAux < hackingTime)
                         {
                             hackingAux += hackingSpeed;
+                            if (!hackingSound) hackingSound = Util.PlaySound("glitch", volume: 0.5f);
                         }
                         else
                         {
@@ -187,9 +191,11 @@ public class Player : Base
 
                                 var l = Util.Limits();
                                 var s = hShip.transform.localScale;
+
                                 hShip.transform.localScale = new Vector3(s.x * -1f, s.y, s.z);
                                 hShip.transform.Translate(new Vector3(l.xMin - 2f, 0, 0));
                                 hShip.GetComponent<Base>().isHacked = true;
+                                Util.PlaySound("okay", volume: 2f);
                                 Util.CreateAlert("HACKED!");
                                 hackingAux = hackingTime;
                                 hShip.tag = "Player";
@@ -203,11 +209,27 @@ public class Player : Base
 
             if (!hacking)
             {
+                if (hackingSound)
+                {
+                    hackingSound.Stop();
+                    hackingSound = null;
+                }
                 hackingAux = 0f;
                 hacked = false;
             }
 
             transform.rotation = Util.AngleToQuarternion(rot * speed);
+
+            // destroy hacked enemies
+            if (down[8])
+            {
+                GameObject[] hackeds = GameObject.FindGameObjectsWithTag("Player");
+                foreach (var h in hackeds)
+                {
+                    if (h.GetComponent<Base>().isHacked)
+                        h.GetComponent<Base>().life = 0f;
+                }
+            }
 
         }
         else
@@ -334,6 +356,11 @@ public class Player : Base
         Destroy(healthBar);
         Destroy(hackingBar);
         Destroy(timeStopBar);
+        if (hackingSound)
+        {
+            hackingSound.Stop();
+            hackingSound = null;
+        }
     }
 
 }

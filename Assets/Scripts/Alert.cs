@@ -13,7 +13,7 @@ public class Alert : Base
     public override void Update()
     {
         base.Update();
-        bool zero = Util.TextAlpha(gameObject, 0.3f * Time.deltaTime);
+        bool zero = Util.TextAlpha(gameObject, 0.2f * Time.deltaTime);
         if (zero) Destroy(gameObject);
     }
 }

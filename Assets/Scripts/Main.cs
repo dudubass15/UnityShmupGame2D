@@ -19,7 +19,7 @@ public class Main : MonoBehaviour
     float asteroided = 0;
     int starCount = 200;
 
-    string[] alerts = { "CONTROLS: W S A D I O P", "ASTEROIDS KEEP SECRETS... DESTROY ALL THEM!" };
+    string[] alerts = { "CONTROLS: W S A D I O P K", "ASTEROIDS KEEP SECRETS... DESTROY ALL THEM!" };
     int alertsTotal = 2;
     int alertCount = 0;
     GameObject alert;

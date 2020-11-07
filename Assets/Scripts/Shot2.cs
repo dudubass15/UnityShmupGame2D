@@ -11,7 +11,7 @@ public class Shot2 : Base
 
         force = Util.RandInt(5, 25);
         explosive = false;
-        velX = -7.0f;
+        // velX = -7.0f;
         fric = 1.00f;
         life = 1;
 

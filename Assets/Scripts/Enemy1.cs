@@ -82,7 +82,8 @@ public class Enemy1 : Base
             foreach (var player in players)
             {
                 if (player.name == name) continue;
-                down[4] = (Util.AngleTo(gameObject, player) < 1f);
+                var d = Util.AngleTo(gameObject, player);
+                down[4] = (isHacked && d > 175f) || (d < 1f);
             }
 
             if (Time.time - lastShot > shotInterval / speed)
@@ -95,6 +96,7 @@ public class Enemy1 : Base
             transform.rotation = Util.AngleToQuarternion(rot * speed * transform.localScale.x);
 
         }
+        else Die();
 
     }
 
@@ -102,7 +104,7 @@ public class Enemy1 : Base
     {
 
         GameObject go = Util.CreateShot2(ShotPosition(), transform.rotation);
-        if (isHacked) go.GetComponent<Base>().velX *= -1.0f;
+        go.GetComponent<Base>().velX = transform.localScale.x * 7f;
         go.GetComponent<Base>().owner = gameObject.name;
         Util.PlaySound("laser", false, 0.05f);
         Util.IgnoreCollision(gameObject, go);

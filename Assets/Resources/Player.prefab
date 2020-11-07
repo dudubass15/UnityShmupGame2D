@@ -157,7 +157,7 @@ MonoBehaviour:
   down: 
   acts: []
   keys: 
-  keyNum: 8
+  keyNum: 9
   pressed: 0
   alpha: 1
   born: 0
@@ -188,6 +188,7 @@ MonoBehaviour:
   keyDownInit: 3
   missileCount: 1
   origScaleX: 0
+  isHacked: 0
   lastShot: 0
   lowLife: 0
   bulletPoint: {fileID: 8036597805266208396}

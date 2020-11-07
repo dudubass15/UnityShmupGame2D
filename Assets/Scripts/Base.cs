@@ -23,7 +23,7 @@ public class Base : MonoBehaviour
     public bool[] down;
     public string[] acts;
     public KeyCode[] keys;
-    public int keyNum = 8;
+    public int keyNum = 9;
     public int pressed = 0;
 
     // color
@@ -72,7 +72,7 @@ public class Base : MonoBehaviour
         keys = new KeyCode[keyNum];
         origScaleX = transform.localScale.x;
         for (int i = 0; i < keyNum; i++) down[i] = false;
-        acts = new string[] { "UP", "DOWN", "LEFT", "RIGHT", "FIRE1", "FIRE2", "FIRE3", "FIRE4", "FIRE5" };
+        acts = new string[] { "UP", "DOWN", "LEFT", "RIGHT", "FIRE1", "FIRE2", "FIRE3", "FIRE4", "FIRE5", "FIRE6" };
     }
 
     public virtual void Update()
@@ -215,6 +215,7 @@ public class Base : MonoBehaviour
         keys[5] = KeyCode.O;
         keys[6] = KeyCode.P;
         keys[7] = KeyCode.U;
+        keys[8] = KeyCode.K;
     }
 
     public virtual void CustomControl()
