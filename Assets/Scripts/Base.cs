@@ -6,6 +6,8 @@ using System;
 public class Base : MonoBehaviour
 {
 
+    public int UID = 0;
+
     // out of screen
     public bool[] oos = { false, false, false, false };
 

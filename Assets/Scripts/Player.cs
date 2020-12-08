@@ -33,6 +33,7 @@ public class Player : Base
     public override void Start()
     {
         base.Start();
+
         fric = 0.92f;
         accel = 45.0f;
         SetupControl();
@@ -46,6 +47,8 @@ public class Player : Base
 
     }
 
+    double lastX = 0;
+    double lastY = 0;
     string hackingName;
     AudioSource hackingSound;
     public override void Update()
@@ -192,9 +195,10 @@ public class Player : Base
                                 var l = Util.Limits();
                                 var s = hShip.transform.localScale;
                                 hShip.GetComponent<Base>().HoloTrail(0.02f);
+                                float rndY = UnityEngine.Random.Range(0, l.yMax);
 
+                                hShip.transform.position = new Vector3(l.xMin * 1.2f, rndY, 0f);
                                 hShip.transform.localScale = new Vector3(s.x * -1f, s.y, s.z);
-                                hShip.transform.position = new Vector3(l.xMin * 1.2f, 0, 0);
                                 hShip.GetComponent<Base>().isHacked = true;
                                 Util.PlaySound("hacked", volume: 8f);
                                 Util.CreateAlert("Enemy Hacked!");
@@ -232,6 +236,59 @@ public class Player : Base
                 }
             }
 
+            // UDP ONLINE
+
+            string recv = UDPClient.GetLastRecv();
+
+            if (recv != "")
+            {
+                if (Util.EnemyLength() > 0)
+                {
+
+                    string[] ev = recv.Split(':');
+                    int _UID = int.Parse(ev[0]);
+
+                    GameObject go = Util.GetEnemyByUID(_UID);
+                    if (!go) go = Util.SetEnemyUID(_UID);
+
+                    switch (ev[1])
+                    {
+
+                        case "move":
+
+                            float _px = float.Parse(ev[2]);
+                            float _py = float.Parse(ev[3]);
+                            float _pr = float.Parse(ev[4]);
+
+                            go.GetComponent<Base>().life = float.Parse(ev[5]);
+                            go.transform.rotation = Quaternion.Euler(0, 0, _pr);
+                            go.transform.position = new Vector3(_px * -1, _py, 0);
+
+                            break;
+
+                        case "down":
+
+                            if (int.Parse(ev[2]) == 4) go.GetComponent<Enemy1>().Shot();
+                            if (int.Parse(ev[2]) == 5) go.GetComponent<Enemy1>().Missile(true);
+
+                            break;
+
+                    }
+
+                }
+            }
+
+            double[] p = RoundedPosition();
+
+            if (p[0] != lastX || p[1] != lastY)
+            {
+                UDPClient.sendUDP(string.Format("{0}:move:{1}:{2}:{3}:{4}", UID, p[0], p[1], p[2], life));
+                lastX = p[0];
+                lastY = p[1];
+            }
+
+            // END ONLINE
+
         }
         else
         {
@@ -240,6 +297,14 @@ public class Player : Base
             Destroy(gameObject);
         }
 
+    }
+
+    double[] RoundedPosition()
+    {
+        double px = Math.Round(transform.position.x, 2);
+        double py = Math.Round(transform.position.y, 2);
+        double pr = Math.Round(transform.rotation.z, 2);
+        return new double[] { px, py, pr };
     }
 
     void SlowMoIn()
@@ -293,6 +358,8 @@ public class Player : Base
 
         }
 
+        UDPClient.sendUDP(string.Format("{0}:down:{1}", UID, 4));
+
     }
 
     void Missile()
@@ -308,6 +375,8 @@ public class Player : Base
             GetComponent<Base>().missileCount--;
             missilesLast = Time.time;
             missiles += 1;
+
+            UDPClient.sendUDP(string.Format("{0}:down:{1}", UID, 5));
 
         }
         else

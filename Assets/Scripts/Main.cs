@@ -7,6 +7,9 @@ using UnityEngine.Video;
 
 public class Main : MonoBehaviour
 {
+
+    int UID;
+
     private GameObject[] asteroids;
     private GameObject[] enemies;
     public int numEnemies = 0;
@@ -30,6 +33,8 @@ public class Main : MonoBehaviour
     {
 
         for (int i = 0; i < starCount; i++) Util.CreateStar(true);
+
+        UID = UnityEngine.Random.Range(1, 999999999);
 
         Util.music = Util.PlaySound("top-gear-1");
 
@@ -93,6 +98,8 @@ public class Main : MonoBehaviour
         }
 
         bsPlayer = player.GetComponent<Base>();
+
+        bsPlayer.UID = UID;
 
     }
 

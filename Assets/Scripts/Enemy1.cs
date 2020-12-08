@@ -33,74 +33,79 @@ public class Enemy1 : Base
         base.Update();
         Bounce();
 
-        transform.rotation = Quaternion.identity;
-
         Vector2 pos = transform.position;
         healthBar.GetComponent<LifeBar>().SetSize(life / maxLife);
         healthBar.transform.position = new Vector3(pos.x, pos.y + 0.5f, 0);
 
         Util.CreateParticle(gameObject, 2f, exaustPoint);
 
-        if (life > 0)
+        if (UID == 0)
         {
 
-            rot = velY / 20;
-
-            if (Mathf.Round(Time.time - born) % 5 == 0)
+            if (life > 0)
             {
-                if (!addMissile)
+
+                rot = velY / 20;
+
+                if (Mathf.Round(Time.time - born) % 5 == 0)
                 {
-                    addMissile = true;
-                    missileCount++;
+                    if (!addMissile)
+                    {
+                        addMissile = true;
+                        missileCount++;
+                    }
                 }
+                else if (addMissile) addMissile = false;
+
+                Rect limits = Util.Limits();
+
+                foreach (string evade in evades) Evade(evade);
+
+                if (Time.time - lastTime >= moveTime)
+                {
+
+                    btnNum = UnityEngine.Random.Range(0, down.Length + (int)(10 / Util.level));
+                    for (int i = 0; i < down.Length; i++) down[i] = false;
+                    moveTime = UnityEngine.Random.Range(0.3f, 0.7f);
+
+                    if (pos.x < limits.xMin + 2f) btnNum = 3;
+                    if (pos.x > limits.xMax - 2f) btnNum = 2;
+                    if (pos.y > limits.yMax - 2f) btnNum = 1;
+                    if (pos.y < limits.yMin + 2f) btnNum = 0;
+
+                    if (down.Length > btnNum) down[btnNum] = true;
+
+                    lastTime = Time.time;
+
+                }
+
+                GameObject[] players = GameObject.FindGameObjectsWithTag(isHacked ? "Enemy" : "Player");
+                foreach (var player in players)
+                {
+                    if (player.name == name) continue;
+                    var d = Util.AngleTo(gameObject, player);
+                    down[4] = (isHacked && d > 175f) || (d < 1f);
+                }
+
+                transform.rotation = Util.AngleToQuarternion(rot * speed * transform.localScale.x);
+
+                if (Time.time - lastShot > shotInterval / speed)
+                {
+                    if (down[5]) { Missile(); moveTime = 0; }
+                    if (down[4]) { Shot(); }
+                    lastShot = Time.time;
+                }
+
+
             }
-            else if (addMissile) addMissile = false;
 
-            Rect limits = Util.Limits();
-
-            foreach (string evade in evades) Evade(evade);
-
-            if (Time.time - lastTime >= moveTime)
-            {
-
-                btnNum = UnityEngine.Random.Range(0, down.Length + (int)(10 / Util.level));
-                for (int i = 0; i < down.Length; i++) down[i] = false;
-                moveTime = UnityEngine.Random.Range(0.3f, 0.7f);
-
-                if (pos.x < limits.xMin + 2f) btnNum = 3;
-                if (pos.x > limits.xMax - 2f) btnNum = 2;
-                if (pos.y > limits.yMax - 2f) btnNum = 1;
-                if (pos.y < limits.yMin + 2f) btnNum = 0;
-
-                if (down.Length > btnNum) down[btnNum] = true;
-
-                lastTime = Time.time;
-
-            }
-
-            GameObject[] players = GameObject.FindGameObjectsWithTag(isHacked ? "Enemy" : "Player");
-            foreach (var player in players)
-            {
-                if (player.name == name) continue;
-                var d = Util.AngleTo(gameObject, player);
-                down[4] = (isHacked && d > 175f) || (d < 1f);
-            }
-
-            if (Time.time - lastShot > shotInterval / speed)
-            {
-                if (down[5]) { Missile(); moveTime = 0; }
-                if (down[4]) { Shot(); }
-                lastShot = Time.time;
-            }
-
-            transform.rotation = Util.AngleToQuarternion(rot * speed * transform.localScale.x);
+            else Die();
 
         }
-        else Die();
 
     }
 
-    void Shot()
+    public void Shot()
     {
 
         GameObject go = Util.CreateShot2(ShotPosition(), transform.rotation);
@@ -111,9 +116,9 @@ public class Enemy1 : Base
 
     }
 
-    void Missile()
+    public void Missile(bool ignoreNoMissile = false)
     {
-        if (GetComponent<Base>().missileCount > 0)
+        if (GetComponent<Base>().missileCount > 0 || ignoreNoMissile)
         {
 
             GameObject go = Util.CreateMissile(ShotPosition(), transform.rotation, Util.level / 10f);

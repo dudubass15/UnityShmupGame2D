@@ -640,4 +640,31 @@ public static class Util
         }
     }
 
+    public static int EnemyLength()
+    {
+        return GameObject.FindGameObjectsWithTag("Enemy").Length;
+    }
+
+    public static GameObject GetEnemyByUID(int UID)
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject go in enemies)
+            if (go.GetComponent<Base>().UID == UID) return go;
+        return null;
+    }
+
+    public static GameObject SetEnemyUID(int UID)
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject go in enemies)
+        {
+            if (go.GetComponent<Base>().UID == 0)
+            {
+                go.GetComponent<Base>().UID = UID;
+                return go;
+            }
+        }
+        return null;
+    }
+
 }
